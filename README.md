@@ -3,7 +3,7 @@
 Personal site of Andrii Naumov, web developer and process automation, based in Hagen, Germany.
 Three languages (German, English, Ukrainian), a scroll-driven 3D scene and a few small surprises.
 
-**Stack:** React 18 · Vite 5 · JavaScript (no TypeScript, on purpose) · Three.js via React Three Fiber and drei · GSAP + ScrollTrigger · Lenis · SCSS · react-i18next · Cloudflare Pages
+**Stack:** React 18 · Vite 5 · JavaScript (no TypeScript, on purpose) · Three.js via React Three Fiber and drei · GSAP + ScrollTrigger · Lenis · SCSS · react-i18next · Cloudflare Workers
 
 ## What's inside
 
@@ -27,10 +27,10 @@ npm run build      # production build in dist/
 npm run preview    # serve the build locally
 ```
 
-To check the build exactly as Cloudflare Pages serves it (headers, redirects, clean URLs):
+To check the build exactly as Cloudflare serves it (headers, redirects, clean URLs):
 
 ```bash
-npx wrangler pages dev dist
+npm run build && npx wrangler dev
 ```
 
 ## Project structure
@@ -46,7 +46,7 @@ src/
   pages/                  Home and the legal pages
   styles/                 SCSS, one file per area, design tokens in _tokens.scss
 public/
-  _headers, _redirects    Cloudflare Pages configuration
+  _headers, _redirects    Cloudflare headers and redirects
   favicon.svg, og-image.png, apple-touch-icon.png, cv/
 scripts/
   prerender.mjs           writes one HTML file per address after the Vite build
@@ -56,15 +56,15 @@ docs/README.uk.md         detailed notes in Ukrainian
 
 ## Deployment
 
-Cloudflare Pages, connected to this repository:
+Cloudflare Workers (static assets), connected to this repository:
 
 | Setting | Value |
 | --- | --- |
 | Build command | `npm run build` |
-| Build output directory | `dist` |
-| Environment variable | `SITE_URL` = `https://your-domain` |
+| Deploy command | `npx wrangler deploy` |
+| Build variable | `SITE_URL` = `https://your-domain` |
 
-Node version comes from `.node-version`. Every push to `main` deploys; other branches get preview URLs.
+`wrangler.jsonc` tells Cloudflare to serve `dist/`, with clean URLs (`/en` → `en.html`) and `404.html` for unknown addresses. Node version comes from `.node-version`. Every push to `main` deploys.
 
 ## Contact
 

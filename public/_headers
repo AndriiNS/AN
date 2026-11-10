@@ -1,5 +1,5 @@
-# Cloudflare Pages: HTTP headers for every response.
-# https://developers.cloudflare.com/pages/configuration/headers/
+# Cloudflare: HTTP headers for every response (Workers static assets and Pages read this file).
+# https://developers.cloudflare.com/workers/static-assets/headers/
 
 /*
   X-Content-Type-Options: nosniff

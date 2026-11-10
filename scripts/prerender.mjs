@@ -7,7 +7,7 @@
 //   /en               -> dist/en.html             /en/impressum  -> dist/en/impressum.html
 //   /uk               -> dist/uk.html             ...
 //
-// Cloudflare Pages (and GitHub Pages) serve dist/en.html at /en, without ".html".
+// Cloudflare (see wrangler.jsonc) serves dist/en.html at /en, without ".html".
 // Also written: 404.html, robots.txt and, once SITE_URL is known, sitemap.xml.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';

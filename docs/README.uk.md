@@ -40,7 +40,7 @@ src/
   lib/logoIntro.js      анімація "Вирощування" для лоадера
   styles/               SCSS: _tokens.scss (кольори, шрифти), по файлу на розділ
 public/
-  _headers, _redirects  налаштування Cloudflare Pages
+  _headers, _redirects  налаштування Cloudflare (заголовки, переадресації)
   og-image.png          картинка для превʼю посилання (1200 × 630)
   favicon.svg           іконка вкладки
   apple-touch-icon.png  іконка для iPhone
@@ -95,18 +95,15 @@ public/
 5. **Цифри в проєктах:** додай реальні результати в `projects.featured` (наприклад, "скоротив підготовку проєкту з N годин до M хвилин").
 6. Якщо зробиш open-source версію парсера, додай посилання в `PROJECT_LINKS.parser`.
 
-## Деплой на Cloudflare Pages
+## Деплой на Cloudflare
 
-1. Залий проєкт у репозиторій на GitHub (див. нижче).
-2. На dash.cloudflare.com: **Workers & Pages → Create → Pages → Connect to Git**, обери репозиторій.
-3. Налаштування збірки:
-   - Framework preset: **Vite** (або None)
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Environment variable: `SITE_URL` = `https://твій-домен` (без слеша в кінці)
-   - Версію Node бере з файлу `.node-version` (20).
-4. Після першого деплою: **Custom domains → Set up a custom domain**, впиши свій домен. Якщо домен уже в Cloudflare, DNS-запис з'явиться сам.
-5. Кожен пуш у `main` перезбирає сайт автоматично, а гілки отримують окремі адреси для перегляду.
+Проєкт підключений у Cloudflare як Worker зі статичними файлами (Workers & Pages → Create → Import a repository):
+
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy`
+- Build variable: `SITE_URL` = `https://твій-домен` (без слеша в кінці)
+
+`wrangler.jsonc` у корені каже Cloudflare віддавати папку `dist/`: `/en` відкриває `en.html`, невідомі адреси отримують `404.html`. Версію Node бере з `.node-version` (20). Кожен пуш у `main` перезбирає сайт. Свій домен підключається у вкладці **Domains** (або Settings → Domains & Routes → Custom domain).
 
 Що робить збірка (`scripts/prerender.mjs`): для кожної адреси (`/`, `/en`, `/uk/impressum`…) створює окремий HTML з правильною мовою, заголовком, описом, `hreflang`, `canonical` і картинкою для превʼю (`public/og-image.png`). Ще `404.html`, `robots.txt` і `sitemap.xml` (коли задано `SITE_URL`).
 
@@ -117,4 +114,4 @@ public/
 
 У Cloudflare не вмикай Web Analytics, Rocket Loader і Zaraz: сайт обіцяє в Datenschutz, що нічого не відстежує, а CSP заблокує чужі скрипти. Якщо колись захочеш аналітику, треба оновити і політику конфіденційності, і CSP.
 
-Перевірити збірку локально так, як її віддасть Cloudflare: `npm run build`, потім `npx wrangler pages dev dist`.
+Перевірити збірку локально так, як її віддасть Cloudflare: `npm run build`, потім `npx wrangler dev`.

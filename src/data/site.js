@@ -6,7 +6,7 @@ export const LANGS = ['en', 'de', 'uk'];
 // The address of the live site, without a slash at the end, e.g. 'https://andriinaumov.dev'.
 // Used at build time for canonical links, hreflang, the sitemap and link previews
 // (scripts/prerender.mjs). Can also be set as the SITE_URL environment variable
-// in the Cloudflare Pages build settings. Leave empty until the domain works.
+// in the Cloudflare build settings. Leave empty until the domain works.
 export const SITE_URL = '';
 
 export const CONTACT = {
@@ -58,7 +58,7 @@ export const IMPRINT = {
 
 // Hosting provider, named in the privacy policy. Change it if you move the site.
 export const HOSTING = {
-  name: 'Cloudflare Pages',
+  name: 'Cloudflare Workers',
   provider: 'Cloudflare',
   company: 'Cloudflare, Inc., 101 Townsend St., San Francisco, CA 94107, USA',
   privacyUrl: 'https://www.cloudflare.com/privacypolicy/',

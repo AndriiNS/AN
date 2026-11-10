@@ -2,7 +2,7 @@
 // The German version is the legally binding one; EN and UK are translations.
 //
 // IMPORTANT: this is a careful template for a small personal portfolio
-// (static site on Cloudflare Pages, no cookies, no analytics, no forms).
+// (static site on Cloudflare Workers, no cookies, no analytics, no forms).
 // It is not legal advice. If you add analytics, a contact form, embedded
 // videos or fonts from Google, the privacy policy must be extended.
 // You can cross-check it with a generator such as e-recht24.de.

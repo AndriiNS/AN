@@ -1,0 +1,13 @@
+// Cloudflare Workers: serve the built site (dist/) as static files.
+// The build runs `npm run build`, then `npx wrangler deploy` reads this file.
+// _headers and _redirects in public/ are applied as well.
+{
+  "name": "andrii-naumov",
+  "compatibility_date": "2025-07-01",
+  "assets": {
+    "directory": "./dist",
+    // /en serves dist/en.html, unknown addresses get dist/404.html with status 404
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

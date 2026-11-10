@@ -1,5 +1,5 @@
-# Cloudflare Pages redirects. German lives at the root, so /de/... goes there.
-# https://developers.cloudflare.com/pages/configuration/redirects/
+# Cloudflare redirects. German lives at the root, so /de/... goes there.
+# https://developers.cloudflare.com/workers/static-assets/redirects/
 /de      /         301
 /de/*    /:splat   301
 /en/     /en       301
