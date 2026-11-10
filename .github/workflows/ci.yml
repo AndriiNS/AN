@@ -1,0 +1,19 @@
+# Checks that the site still builds on every push and pull request.
+# Deployment itself is done by Cloudflare Pages, connected to this repository.
+name: Build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm run build

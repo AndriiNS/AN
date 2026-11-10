@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "title": "Andrii Naumov, web developer and process automation in Hagen",
+    "description": "Andrii Naumov, web developer in Hagen. Websites, web apps and process automation: integrations, internal tools and less manual work for teams."
+  },
+  "nav": {
+    "skip": "Skip to content",
+    "projects": "Projects",
+    "journey": "Journey",
+    "skills": "Skills",
+    "contact": "Contact",
+    "terminal": "Terminal",
+    "language": "Language",
+    "home": "Andrii Naumov, home",
+    "main": "Main"
+  },
+  "hero": {
+    "name": "Andrii Naumov",
+    "role": "Web developer and process automation, Hagen",
+    "tagline": "I build websites and web apps and automate the processes around them, so teams spend less time on routine work.",
+    "ctaProjects": "See projects",
+    "ctaCv": "Download CV",
+    "scrollHint": "Scroll to take this page apart",
+    "stagesLabel": "How I work",
+    "stages": [
+      {
+        "name": "Build",
+        "text": "I develop websites and web apps from layout to a working product, with a clean structure that is easy to extend."
+      },
+      {
+        "name": "Automate",
+        "text": "I find the steps a team repeats by hand and hand them over to scripts, integrations and internal tools."
+      },
+      {
+        "name": "Ship",
+        "text": "The result goes live faster: responsive, stable and with fewer manual mistakes."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Selected work",
+    "intro": "Most of my commercial code is under NDA, so here I describe what I built and why it mattered.",
+    "live": "Live site",
+    "code": "Code",
+    "nda": "Internal tool, code under NDA",
+    "featured": [
+      {
+        "id": "parser",
+        "name": "Project setup automation",
+        "year": "2026",
+        "summary": "A Python tool that downloads a website, localizes its assets and links, and turns it into a clean project ready for development.",
+        "detail": "Every new project used to start with hours of copying and fixing files by hand. I designed and built this tool on my own initiative, and now the team starts from a working project in minutes.",
+        "stack": [
+          "Python",
+          "Automation",
+          "CLI"
+        ]
+      },
+      {
+        "id": "landings",
+        "name": "Landing pages for a business school",
+        "year": "2024–2025",
+        "summary": "Responsive landing pages for the marketing campaigns of Alex Yanovsky Higher School of Management.",
+        "detail": "I connected payment gateways and third-party APIs, built a set of reusable components so new pages launched faster, and tuned performance, SEO and cross-browser support.",
+        "stack": [
+          "HTML",
+          "SCSS",
+          "JavaScript",
+          "PHP",
+          "REST API"
+        ]
+      }
+    ],
+    "earlierTitle": "Earlier projects",
+    "earlier": [
+      {
+        "id": "midas",
+        "name": "MIDAS",
+        "summary": "Online store layout with a product catalog and cart.",
+        "stack": [
+          "HTML",
+          "SCSS",
+          "JavaScript"
+        ]
+      },
+      {
+        "id": "agency",
+        "name": "Agency Creative",
+        "summary": "Landing page for a creative agency with GSAP animations.",
+        "stack": [
+          "HTML",
+          "SCSS",
+          "JavaScript",
+          "GSAP"
+        ]
+      },
+      {
+        "id": "2rism",
+        "name": "2rism",
+        "summary": "Travel landing page with scroll animations.",
+        "stack": [
+          "HTML",
+          "SCSS",
+          "JavaScript",
+          "ScrollReveal"
+        ]
+      }
+    ]
+  },
+  "journey": {
+    "title": "Khmelnytskyi → Kyiv → Hagen",
+    "intro": "Three cities, four years, three jobs.",
+    "cities": {
+      "khmelnytskyi": "Khmelnytskyi",
+      "kyiv": "Kyiv",
+      "hagen": "Hagen"
+    },
+    "items": [
+      {
+        "date": "10.2022 – 06.2026",
+        "title": "Bachelor's degree",
+        "place": "Khmelnytskyi National University",
+        "text": "Studied while working, which taught me to plan my time and learn fast."
+      },
+      {
+        "date": "04.2024 – 12.2025",
+        "title": "HTML Developer",
+        "place": "Alex Yanovsky Higher School of Management, remote",
+        "text": "Landing pages for marketing campaigns, payment gateways, API integrations, performance and SEO."
+      },
+      {
+        "date": "02.2025 – 11.2025",
+        "title": "Markup Developer",
+        "place": "Company under NDA, remote",
+        "text": "Web applications and landing pages, reusable templates, analytics and API integrations, close work with designers and marketers."
+      },
+      {
+        "date": "01.2026 – now",
+        "title": "Middle Web Developer",
+        "place": "Company under NDA, hybrid",
+        "text": "Internal tools and automation, a Python website parser, technical research and payment integrations."
+      }
+    ],
+    "arrived": "Now at home in Hagen"
+  },
+  "skills": {
+    "title": "What I work with",
+    "groups": {
+      "frontend": "Front-end",
+      "backend": "Back-end and data",
+      "cms": "CMS",
+      "motion": "Animation and 3D",
+      "tools": "Tools"
+    },
+    "languagesTitle": "Languages I speak",
+    "languages": [
+      {
+        "name": "Ukrainian",
+        "level": "native",
+        "cefr": "native"
+      },
+      {
+        "name": "English",
+        "level": "B2",
+        "cefr": "B2"
+      },
+      {
+        "name": "German",
+        "level": "A1, learning",
+        "cefr": "A1"
+      }
+    ],
+    "scale": "Level on the CEFR scale",
+    "native": "native"
+  },
+  "about": {
+    "title": "About me",
+    "text": "I'm a web developer from Ukraine, now living in Hagen. I build websites and web applications and automate the processes around them: routine tasks, integrations between services and internal tools for the team. I started with landing pages for marketing teams, where every second of load time costs sales, so performance and clean code matter to me. Automation grew from the same idea: if something is done by hand again and again, it should be done by code.",
+    "panelTitle": "Computed",
+    "facts": [
+      [
+        "location",
+        "Hagen, NRW"
+      ],
+      [
+        "experience",
+        "2.5+ years"
+      ],
+      [
+        "role",
+        "Middle Web Developer"
+      ],
+      [
+        "focus",
+        "web development, process automation"
+      ],
+      [
+        "languages",
+        "uk, en (B2), de (A1)"
+      ],
+      [
+        "currently",
+        "learning German"
+      ]
+    ]
+  },
+  "contact": {
+    "title": "Let's talk",
+    "text": "Have a role or a project in mind? Write to me, I usually reply within a day.",
+    "cv": "Download CV (PDF)",
+    "copy": "Copy email",
+    "copied": "Copied",
+    "localTime": "Local time in Hagen"
+  },
+  "footer": {
+    "imprint": "Imprint",
+    "built": "Built with React, Three.js and GSAP.",
+    "terminalHint": "Press the key left of 1 (` or ~) to open the terminal",
+    "privacy": "Privacy policy",
+    "legal": "Legal"
+  },
+  "terminal": {
+    "title": "Terminal",
+    "close": "Close terminal",
+    "inputLabel": "Command",
+    "welcome": "Hi! Type help to see what you can do here.",
+    "help": "Commands:\n  about       who I am\n  projects    what I built\n  skills      my stack\n  contact     how to reach me\n  cv          download my CV\n  lang de     switch language (en, de, uk)\n  goto <id>   scroll to projects, journey, skills or contact\n  clear       clear the screen\n  exit        close the terminal",
+    "notFound": "Command not found: {{cmd}}. Type help.",
+    "langSwitched": "Language: {{lang}}",
+    "langUnknown": "Available languages: en, de, uk",
+    "gotoUnknown": "Sections: projects, journey, skills, contact",
+    "cvStarted": "Downloading CV…",
+    "hire": "Permission granted. Opening your mail app…",
+    "sudo": "Nice try. Try: sudo hire-me"
+  },
+  "imprint": {
+    "title": "Imprint",
+    "back": "Back to home",
+    "responsible": "Responsible for the content",
+    "contact": "Contact",
+    "note": "This is a private portfolio website."
+  },
+  "legal": {
+    "translationNote": "This is a translation for your convenience. The German version is legally binding.",
+    "germanLink": "Read the German version",
+    "updated": "Last updated: November 2026"
+  }
+}

@@ -1,0 +1,243 @@
+// The hero is much taller than the screen: its inner stage sticks while the
+// visitor scrolls, and that scroll distance drives the 3D scene.
+.hero {
+  position: relative;
+  height: 360vh;
+
+  &--static {
+    height: auto;
+  }
+
+  &__stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--header-h) var(--gutter) 0;
+  }
+
+  &__canvas {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__inner {
+    position: relative;
+    display: grid;
+    max-width: var(--max);
+    width: 100%;
+    margin: 0 auto;
+    pointer-events: none;
+    a {
+      pointer-events: auto;
+    }
+    // intro and captions share one grid cell, so they sit in the same place
+    > * {
+      grid-area: 1 / 1;
+    }
+  }
+
+  &__role {
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  &__name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    // never taller than the screen allows (landscape phones, small laptops)
+    font-size: min(var(--fs-hero), 17vh);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    max-width: 6.5em;
+  }
+
+  &__tagline {
+    margin-top: 28px;
+    max-width: 26ch;
+    font-size: var(--fs-md);
+    line-height: 1.4;
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 36px;
+  }
+
+  &__captions {
+    align-self: center;
+    max-width: 26rem;
+  }
+
+  &__caption {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    &.is-active {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  &__captions {
+    display: grid;
+  }
+
+  &__caption-name {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--fs-xl);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  &__caption-text {
+    margin-top: 16px;
+    font-size: var(--fs-md);
+    line-height: 1.4;
+    color: var(--muted);
+  }
+
+  // the three stages, a real sequence, with a bar each
+  &__steps {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    width: min(var(--max), calc(100% - var(--gutter) * 2));
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    counter-reset: step;
+
+    li {
+      counter-increment: step;
+      display: grid;
+      gap: 8px;
+      font-size: var(--fs-sm);
+      color: var(--muted);
+      transition: color 0.3s;
+      &.is-on {
+        color: var(--ink);
+      }
+    }
+  }
+
+  &__step-name {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  &__step-name::before {
+    content: counter(step) '  ';
+    white-space: pre;
+    color: var(--blue);
+    font-weight: 500;
+  }
+
+  &__step-track {
+    height: 3px;
+    border-radius: 3px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  &__step-bar {
+    display: block;
+    height: 100%;
+    background: var(--blue);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+}
+
+// narrow screens: the 3D page sits above the text
+@media (max-aspect-ratio: 23/20) {
+  .hero__stage {
+    justify-content: flex-end;
+    padding-bottom: 110px;
+  }
+  .hero__name {
+    font-size: clamp(2.5rem, 11.5vw, 6rem);
+  }
+  .hero__role {
+    margin-bottom: 8px;
+  }
+  .hero__tagline {
+    margin-top: 16px;
+  }
+  .hero__actions {
+    margin-top: 24px;
+  }
+  .hero__tagline {
+    font-size: var(--fs-base);
+  }
+  .hero__captions {
+    align-self: end;
+  }
+}
+
+// short screens: small laptops, landscape phones
+@media (max-height: 700px) {
+  .hero__stage {
+    min-height: 0;
+  }
+  .hero__tagline {
+    margin-top: 16px;
+    font-size: var(--fs-base);
+  }
+  .hero__actions {
+    margin-top: 20px;
+  }
+}
+
+@media (max-height: 520px) {
+  .hero__role,
+  .hero__steps {
+    display: none;
+  }
+  .hero__stage {
+    padding-bottom: 16px;
+  }
+  .hero__actions .btn {
+    min-height: 42px;
+    padding: 0 18px;
+  }
+}
+
+// small phones in portrait: keep the text compact so the 3D page above stays free
+@media (max-aspect-ratio: 23/20) and (max-height: 700px) {
+  .hero__role {
+    display: none;
+  }
+  .hero__name {
+    font-size: clamp(2.2rem, 10.5vw, 3rem);
+  }
+  .hero__stage {
+    padding-bottom: 84px;
+  }
+  .hero__actions .btn {
+    min-height: 44px;
+    padding: 0 18px;
+    font-size: var(--fs-sm);
+  }
+}
+
+// phones: three stage names must share one line ("Automatisieren", "Автоматизація")
+@media (max-width: 480px) {
+  .hero__steps {
+    gap: 10px;
+    li {
+      font-size: 0.75rem;
+    }
+  }
+}

@@ -1,0 +1,258 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: var(--header-h);
+}
+
+// Lenis smooth scroll
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+}
+
+::selection {
+  background: var(--yellow);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -100px;
+  padding: 8px 14px;
+  background: var(--yellow);
+  color: var(--ink);
+  z-index: 100;
+  &:focus {
+    top: 12px;
+  }
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 50px;
+  padding: 0 24px;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  &:hover {
+    background: var(--ink);
+    color: var(--surface);
+  }
+  &--primary {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: var(--surface);
+    &:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+  }
+}
+
+// Split-flap letters (FlapText.jsx)
+.flap__word {
+  display: inline-block;
+  white-space: nowrap;
+  perspective: 600px;
+}
+.flap__char {
+  display: inline-block;
+  transform-origin: 50% 55%;
+  backface-visibility: hidden;
+}
+
+// Tag labels on the 3D scene (HeroScene.jsx)
+.scene-tag {
+  display: inline-block;
+  transform: translate(0, -130%);
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: var(--ink);
+  color: var(--yellow);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  white-space: nowrap;
+  &--live {
+    transform: none;
+    background: var(--blue);
+    color: #fff;
+  }
+}
+
+// Body text fades in quickly after a language switch; headings flip instead
+body.is-switching main p:not(.flap),
+body.is-switching main li,
+body.is-switching main h3 {
+  animation: lang-fade 0.45s var(--ease);
+}
+@keyframes lang-fade {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+// ---------- Logo mark (LogoMark.jsx) ----------
+.logo-mark {
+  display: block;
+  overflow: visible;
+  fill: var(--ink);
+  .logo-mark__cursor {
+    fill: var(--cursor);
+  }
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+// ---------- First-visit loader (Loader.jsx) ----------
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  background: var(--paper);
+  // catches every click and touch, so nothing underneath reacts while it loads
+  cursor: progress;
+  touch-action: none;
+}
+.loader__mark {
+  width: clamp(96px, 14vw, 132px);
+  aspect-ratio: 1;
+  will-change: transform;
+  .logo-mark {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+// while the loader runs, the header logo waits for the flying mark
+html.is-loading .site-header .logo-mark {
+  visibility: hidden;
+}
+
+// loader or page curtain on screen: no scrolling at all (see lockInteraction in lib/motion.js)
+html.is-locked {
+  overflow: hidden;
+  overscroll-behavior: none;
+  body {
+    touch-action: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo:hover .logo-mark__cursor,
+  .logo:focus-visible .logo-mark__cursor {
+    animation: none;
+  }
+}
+
+// ---------- Page transition curtain (lib/routing.jsx) ----------
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  visibility: hidden;
+  will-change: transform;
+}
+.curtain__mark {
+  width: clamp(72px, 10vw, 104px);
+  aspect-ratio: 1;
+  .logo-mark {
+    width: 100%;
+    height: 100%;
+  }
+}
+.logo-mark--on-dark {
+  fill: var(--surface);
+  .logo-mark__cursor {
+    fill: var(--yellow);
+  }
+}

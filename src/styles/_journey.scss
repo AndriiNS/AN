@@ -1,0 +1,289 @@
+.journey__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+}
+
+// the map stays on screen while the timeline scrolls past
+.journey__map {
+  position: sticky;
+  top: calc(var(--header-h) + 40px);
+  perspective: 1400px;
+}
+
+.map {
+  width: 100%;
+  height: auto;
+  transform: rotateX(24deg) rotateZ(-3deg);
+  transform-origin: 50% 70%;
+  overflow: visible;
+  // the map fades out at its edges instead of ending in a hard rectangle
+  mask-image: radial-gradient(ellipse 62% 60% at 55% 52%, #000 60%, transparent 100%);
+
+  &__dots {
+    fill: #c9cfd9;
+    &--ua {
+      fill: var(--blue);
+      opacity: 0.55;
+    }
+    &--de {
+      fill: var(--ink);
+      opacity: 0.45;
+    }
+  }
+
+  &__route-ghost {
+    fill: none;
+    stroke: #aab2c0;
+    stroke-width: 2;
+    stroke-dasharray: 4 8;
+  }
+
+  &__route {
+    fill: none;
+    stroke: var(--blue);
+    stroke-width: 4;
+    stroke-linecap: round;
+  }
+
+  &__traveller {
+    fill: var(--yellow);
+    stroke: var(--ink);
+    stroke-width: 2.5;
+  }
+
+  &__city {
+    circle {
+      fill: var(--paper);
+      stroke: var(--muted);
+      stroke-width: 2.5;
+      transition: stroke 0.3s, fill 0.3s;
+    }
+    text {
+      fill: var(--muted);
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 24px;
+      paint-order: stroke;
+      stroke: var(--paper);
+      stroke-width: 6px;
+      transition: fill 0.3s;
+    }
+    &.is-on {
+      circle {
+        stroke: var(--ink);
+        fill: var(--blue);
+      }
+      text {
+        fill: var(--ink);
+      }
+    }
+
+  }
+}
+
+.journey__timeline {
+  // a real sequence, so the numbers carry meaning
+  counter-reset: step;
+  padding-bottom: 10vh;
+}
+
+.milestone {
+  position: relative;
+  padding: 0 0 56px 40px;
+  min-height: 34vh;
+  border-left: 1.5px solid var(--line);
+  counter-increment: step;
+  transition: opacity 0.4s;
+  opacity: 0.4;
+
+  &::before {
+    content: counter(step);
+    position: absolute;
+    left: -14px;
+    top: 0;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 1.5px solid var(--line);
+    font-size: 13px;
+    color: var(--muted);
+    transition: background-color 0.4s, color 0.4s, border-color 0.4s;
+  }
+
+  &.is-reached {
+    opacity: 1;
+    &::before {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: var(--surface);
+    }
+  }
+
+  &:last-child {
+    min-height: 0;
+    border-left-color: transparent;
+  }
+
+  &__date {
+    color: var(--blue);
+    font-weight: 500;
+    font-size: var(--fs-sm);
+    padding-top: 2px;
+  }
+  &__title {
+    margin-top: 8px;
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    font-size: var(--fs-md);
+  }
+  &__place {
+    color: var(--muted);
+  }
+  &__text {
+    margin-top: 12px;
+    max-width: 44ch;
+  }
+}
+
+@media (max-width: 860px) {
+  .journey__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .journey__map {
+    top: var(--header-h);
+    z-index: 2;
+    background: var(--paper);
+    padding: 8px 0;
+    margin: 0 calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+  }
+  .map {
+    transform: none;
+    max-height: 34vh;
+  }
+  // the map is drawn smaller here, so names and the route get thicker
+  .map__city text {
+    font-size: 34px;
+    stroke-width: 9px;
+  }
+  .map__city--hagen.is-on text {
+    font-size: 40px;
+    stroke-width: 22px;
+  }
+  .map__route {
+    stroke-width: 6;
+  }
+  .milestone {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .milestone {
+    opacity: 1;
+  }
+}
+
+// Hagen lights up in bright yellow when the route arrives
+.map__city--hagen {
+  circle {
+    transition: transform 0.4s var(--ease), fill 0.3s, stroke 0.3s;
+  }
+  .map__pulse {
+    fill: none;
+    stroke: none;
+  }
+  &.is-on {
+    circle:not(.map__pulse) {
+      transform: scale(1.8);
+      transform-origin: center;
+      transform-box: fill-box;
+      fill: var(--yellow);
+      stroke: var(--ink);
+      stroke-width: 2;
+    }
+    .map__pulse {
+      fill: var(--yellow);
+      transform-origin: center;
+      transform-box: fill-box;
+      animation: hagen-pulse 1.8s var(--ease) infinite;
+    }
+    text {
+      fill: var(--ink);
+      font-size: 30px;
+      font-weight: 800;
+      // a yellow marker behind the name: a thick stroke drawn under the letters
+      stroke: var(--yellow);
+      stroke-width: 18px;
+      stroke-linejoin: round;
+    }
+  }
+}
+
+@keyframes hagen-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  to {
+    transform: scale(4.5);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .map__city--hagen.is-on .map__pulse {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+// room after the last milestone: the sticky map stays on screen while Hagen lights up
+.journey__timeline {
+  padding-bottom: 55vh;
+}
+
+// a small note under the map that appears when the route arrives in Hagen
+.journey__arrived {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 0 8%;
+  padding: 8px 14px 8px 10px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--surface);
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(10px) scale(0.96);
+  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease);
+  &::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--yellow);
+    box-shadow: 0 0 0 4px rgba(255, 204, 51, 0.3);
+  }
+  &.is-on {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .journey__timeline {
+    padding-bottom: 35vh;
+  }
+  .journey__arrived {
+    margin-left: 0;
+    font-size: var(--fs-sm);
+  }
+}

@@ -1,0 +1,129 @@
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  height: var(--header-h);
+  background: rgba(238, 240, 243, 0.8);
+  backdrop-filter: blur(14px);
+}
+
+// same width and side padding as the sections, so the logo lines up with the content
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 100%;
+  max-width: calc(var(--max) + var(--gutter) * 2);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-weight: 800;
+
+  .logo-mark {
+    width: 30px;
+    height: 30px;
+  }
+  // hovering the logo makes the cursor blink, like a caret in an editor
+  &:hover .logo-mark__cursor,
+  &:focus-visible .logo-mark__cursor {
+    animation: caret-blink 1s steps(1) infinite;
+  }
+}
+
+.site-nav {
+  display: flex;
+  gap: 28px;
+  margin-left: auto;
+  a {
+    text-decoration: none;
+    color: var(--muted);
+    transition: color 0.2s;
+    &:hover {
+      color: var(--ink);
+    }
+  }
+}
+
+.site-header__tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+  .site-nav + & {
+    margin-left: 0;
+  }
+}
+
+.lang-switch {
+  display: flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line);
+  a {
+    min-width: 42px;
+    padding: 5px 0;
+    border-radius: 999px;
+    text-align: center;
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--muted);
+    transition: background-color 0.25s var(--ease), color 0.25s;
+    &.is-active {
+      color: var(--surface);
+      background: var(--ink);
+    }
+    &:not(.is-active):hover {
+      color: var(--ink);
+    }
+  }
+}
+
+.terminal-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--yellow);
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  cursor: pointer;
+  &:hover {
+    background: var(--blue);
+  }
+  &__label {
+    color: var(--surface);
+    font-family: var(--font-body);
+  }
+}
+
+@media (max-width: 900px) {
+  .site-nav {
+    display: none;
+  }
+  .site-header__tools {
+    margin-left: auto !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header__inner {
+    gap: 12px;
+  }
+  .logo__text,
+  .terminal-btn__label {
+    display: none;
+  }
+}

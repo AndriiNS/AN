@@ -1,0 +1,248 @@
+{
+  "meta": {
+    "title": "Andrii Naumov, Webentwickler und Prozessautomatisierung in Hagen",
+    "description": "Andrii Naumov, Webentwickler in Hagen. Websites, Webanwendungen und Prozessautomatisierung: Integrationen, interne Tools und weniger manuelle Arbeit für Teams."
+  },
+  "nav": {
+    "skip": "Zum Inhalt springen",
+    "projects": "Projekte",
+    "journey": "Werdegang",
+    "skills": "Skills",
+    "contact": "Kontakt",
+    "terminal": "Terminal",
+    "language": "Sprache",
+    "home": "Andrii Naumov, Startseite",
+    "main": "Hauptnavigation"
+  },
+  "hero": {
+    "name": "Andrii Naumov",
+    "role": "Webentwickler und Prozessautomatisierung, Hagen",
+    "tagline": "Ich entwickle Websites und Webanwendungen und automatisiere die Prozesse drumherum, damit Teams weniger Zeit mit Routine verbringen.",
+    "ctaProjects": "Projekte ansehen",
+    "ctaCv": "Lebenslauf herunterladen",
+    "scrollHint": "Scrollen, um diese Seite zu zerlegen",
+    "stagesLabel": "So arbeite ich",
+    "stages": [
+      {
+        "name": "Entwickeln",
+        "text": "Ich entwickle Websites und Webanwendungen vom Layout bis zum fertigen Produkt, mit einer sauberen Struktur, die sich leicht erweitern lässt."
+      },
+      {
+        "name": "Automatisieren",
+        "text": "Ich finde die Schritte, die ein Team immer wieder von Hand erledigt, und übergebe sie an Skripte, Integrationen und interne Tools."
+      },
+      {
+        "name": "Ausliefern",
+        "text": "So geht das Ergebnis schneller live: responsiv, stabil und mit weniger manuellen Fehlern."
+      }
+    ]
+  },
+  "projects": {
+    "title": "Ausgewählte Arbeiten",
+    "intro": "Der Großteil meines Codes steht unter NDA. Deshalb beschreibe ich hier, was ich gebaut habe und warum es wichtig war.",
+    "live": "Live-Seite",
+    "code": "Code",
+    "nda": "Internes Tool, Code unter NDA",
+    "featured": [
+      {
+        "id": "parser",
+        "name": "Automatisierter Projektstart",
+        "year": "2026",
+        "summary": "Ein Python-Tool, das eine Website herunterlädt, Assets und Links lokalisiert und daraus ein sauberes Projekt für die Entwicklung macht.",
+        "detail": "Früher begann jedes neue Projekt mit stundenlangem manuellem Kopieren und Korrigieren von Dateien. Ich habe das Tool aus eigener Initiative entworfen und gebaut. Jetzt startet das Team in wenigen Minuten mit einem lauffähigen Projekt.",
+        "stack": [
+          "Python",
+          "Automatisierung",
+          "CLI"
+        ]
+      },
+      {
+        "id": "landings",
+        "name": "Landingpages für eine Business School",
+        "year": "2024–2025",
+        "summary": "Responsive Landingpages für die Marketingkampagnen der Alex Yanovsky Higher School of Management.",
+        "detail": "Ich habe Zahlungsanbieter und externe APIs angebunden, wiederverwendbare Komponenten gebaut, damit neue Seiten schneller online gehen, und Performance, SEO und Browser-Kompatibilität optimiert.",
+        "stack": [
+          "HTML",
+          "SCSS",
+          "JavaScript",
+          "PHP",
+          "REST API"
+        ]
+      }
+    ],
+    "earlierTitle": "Frühere Projekte",
+    "earlier": [
+      {
+        "id": "midas",
+        "name": "MIDAS",
+        "summary": "Layout eines Onlineshops mit Produktkatalog und Warenkorb.",
+        "stack": [
+          "HTML",
+          "SCSS",
+          "JavaScript"
+        ]
+      },
+      {
+        "id": "agency",
+        "name": "Agency Creative",
+        "summary": "Landingpage für eine Kreativagentur mit GSAP-Animationen.",
+        "stack": [
+          "HTML",
+          "SCSS",
+          "JavaScript",
+          "GSAP"
+        ]
+      },
+      {
+        "id": "2rism",
+        "name": "2rism",
+        "summary": "Reise-Landingpage mit Scroll-Animationen.",
+        "stack": [
+          "HTML",
+          "SCSS",
+          "JavaScript",
+          "ScrollReveal"
+        ]
+      }
+    ]
+  },
+  "journey": {
+    "title": "Chmelnyzkyj → Kyjiw → Hagen",
+    "intro": "Drei Städte, vier Jahre, drei Jobs.",
+    "cities": {
+      "khmelnytskyi": "Chmelnyzkyj",
+      "kyiv": "Kyjiw",
+      "hagen": "Hagen"
+    },
+    "items": [
+      {
+        "date": "10.2022 – 06.2026",
+        "title": "Bachelorstudium",
+        "place": "Nationale Universität Chmelnyzkyj",
+        "text": "Studium neben der Arbeit. Dabei habe ich gelernt, meine Zeit zu planen und schnell zu lernen."
+      },
+      {
+        "date": "04.2024 – 12.2025",
+        "title": "HTML-Entwickler",
+        "place": "Alex Yanovsky Higher School of Management, remote",
+        "text": "Landingpages für Marketingkampagnen, Zahlungsanbieter, API-Integrationen, Performance und SEO."
+      },
+      {
+        "date": "02.2025 – 11.2025",
+        "title": "Markup-Entwickler",
+        "place": "Unternehmen unter NDA, remote",
+        "text": "Webanwendungen und Landingpages, wiederverwendbare Templates, Analytics- und API-Integrationen, enge Zusammenarbeit mit Design und Marketing."
+      },
+      {
+        "date": "01.2026 – heute",
+        "title": "Middle Web Developer",
+        "place": "Unternehmen unter NDA, hybrid",
+        "text": "Interne Tools und Automatisierung, ein Website-Parser in Python, technische Recherche und Zahlungsintegrationen."
+      }
+    ],
+    "arrived": "Jetzt zu Hause in Hagen"
+  },
+  "skills": {
+    "title": "Womit ich arbeite",
+    "groups": {
+      "frontend": "Frontend",
+      "backend": "Backend und Daten",
+      "cms": "CMS",
+      "motion": "Animation und 3D",
+      "tools": "Tools"
+    },
+    "languagesTitle": "Sprachen",
+    "languages": [
+      {
+        "name": "Ukrainisch",
+        "level": "Muttersprache",
+        "cefr": "native"
+      },
+      {
+        "name": "Englisch",
+        "level": "B2",
+        "cefr": "B2"
+      },
+      {
+        "name": "Deutsch",
+        "level": "A1, ich lerne weiter",
+        "cefr": "A1"
+      }
+    ],
+    "scale": "Niveau nach GER",
+    "native": "Muttersprache"
+  },
+  "about": {
+    "title": "Über mich",
+    "text": "Ich bin Webentwickler aus der Ukraine und lebe jetzt in Hagen. Ich entwickle Websites und Webanwendungen und automatisiere die Prozesse drumherum: wiederkehrende Aufgaben, Integrationen zwischen Diensten und interne Tools für das Team. Angefangen habe ich mit Landingpages für Marketingteams, wo jede Sekunde Ladezeit Umsatz kostet. Deshalb sind mir Performance und sauberer Code wichtig. Die Automatisierung kommt aus derselben Idee: Was immer wieder von Hand gemacht wird, sollte Code erledigen.",
+    "panelTitle": "Computed",
+    "facts": [
+      [
+        "location",
+        "Hagen, NRW"
+      ],
+      [
+        "experience",
+        "2,5+ Jahre"
+      ],
+      [
+        "role",
+        "Middle Web Developer"
+      ],
+      [
+        "focus",
+        "Webentwicklung, Prozessautomatisierung"
+      ],
+      [
+        "languages",
+        "uk, en (B2), de (A1)"
+      ],
+      [
+        "currently",
+        "lerne Deutsch"
+      ]
+    ]
+  },
+  "contact": {
+    "title": "Sprechen wir",
+    "text": "Sie haben eine Stelle oder ein Projekt? Schreiben Sie mir, ich antworte meist innerhalb eines Tages.",
+    "cv": "Lebenslauf herunterladen (PDF)",
+    "copy": "E-Mail kopieren",
+    "copied": "Kopiert",
+    "localTime": "Ortszeit in Hagen"
+  },
+  "footer": {
+    "imprint": "Impressum",
+    "built": "Gebaut mit React, Three.js und GSAP.",
+    "terminalHint": "Taste links neben der 1 (^ oder `) öffnet das Terminal",
+    "privacy": "Datenschutz",
+    "legal": "Rechtliches"
+  },
+  "terminal": {
+    "title": "Terminal",
+    "close": "Terminal schließen",
+    "inputLabel": "Befehl",
+    "welcome": "Hallo! Tippen Sie help, um die Befehle zu sehen.",
+    "help": "Befehle:\n  about       wer ich bin\n  projects    was ich gebaut habe\n  skills      mein Stack\n  contact     wie Sie mich erreichen\n  cv          Lebenslauf herunterladen\n  lang en     Sprache wechseln (en, de, uk)\n  goto <id>   zu projects, journey, skills oder contact scrollen\n  clear       Bildschirm leeren\n  exit        Terminal schließen",
+    "notFound": "Befehl nicht gefunden: {{cmd}}. Tippen Sie help.",
+    "langSwitched": "Sprache: {{lang}}",
+    "langUnknown": "Verfügbare Sprachen: en, de, uk",
+    "gotoUnknown": "Bereiche: projects, journey, skills, contact",
+    "cvStarted": "Lebenslauf wird heruntergeladen…",
+    "hire": "Zugriff gewährt. Ihr Mailprogramm wird geöffnet…",
+    "sudo": "Netter Versuch. Probieren Sie: sudo hire-me"
+  },
+  "imprint": {
+    "title": "Impressum",
+    "back": "Zur Startseite",
+    "responsible": "Verantwortlich für den Inhalt",
+    "contact": "Kontakt",
+    "note": "Dies ist eine private Portfolio-Website."
+  },
+  "legal": {
+    "translationNote": "",
+    "germanLink": "",
+    "updated": "Stand: November 2026"
+  }
+}

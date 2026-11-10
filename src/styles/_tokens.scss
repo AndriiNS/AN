@@ -1,0 +1,42 @@
+// Design tokens. Light "workshop" look: cool paper, ink, one strong blue
+// and a yellow used only for highlights (progress, markers, selection).
+:root {
+  color-scheme: light;
+  --paper: #eef0f3;
+  --surface: #ffffff;
+  --ink: #15171c;
+  --muted: #596070;
+  --line: #d3d8e0;
+  --blue: #2142d9;
+  --blue-soft: #e3e8fd;
+  --yellow: #ffcc33;
+  --cursor: #f5b700; // the logo cursor: a bit deeper yellow, so it holds up on the light paper
+
+  --font-display: 'Wix Madefor Display', system-ui, sans-serif;
+  --font-body: 'Wix Madefor Text', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  // type scale (perfect fourth)
+  --fs-sm: 0.875rem;
+  --fs-base: 1.0625rem;
+  --fs-md: 1.375rem;
+  --fs-lg: 1.75rem;
+  --fs-xl: clamp(2rem, 1.2rem + 3vw, 3.75rem);
+  --fs-hero: clamp(3rem, 1rem + 7.5vw, 8.5rem);
+
+  --gutter: max(16px, 4vw);
+  --max: 1280px;
+  --header-h: 64px;
+  --radius: 10px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+// big screens get a wider container, so the page does not float in empty space
+@media (min-width: 1800px) {
+  :root {
+    --max: 1480px;
+    --fs-base: 1.125rem;
+    --fs-md: 1.6rem;
+    --fs-hero: clamp(3rem, 1rem + 6.6vw, 11rem);
+  }
+}

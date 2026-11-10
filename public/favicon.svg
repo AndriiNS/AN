@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    .ink { fill: #15171c; }
+    .cursor { fill: #f5b700; }
+    /* dark browser tabs: light strokes, so the mark stays visible */
+    @media (prefers-color-scheme: dark) {
+      .ink { fill: #f2f4f7; }
+      .cursor { fill: #ffcc33; }
+    }
+  </style>
+  <g class="ink">
+    <polygon points="4.5,88 16.32,88 45.5,14.08 45.5,12 34.5,12" />
+    <rect x="18.06" y="56.5" width="21.94" height="11" />
+    <polygon points="34.5,14.6 34.5,12 45.5,12 83.5,88 71.2,88" />
+    <rect x="72.5" y="12" width="11" height="76" />
+  </g>
+  <rect class="cursor" x="34.5" y="12" width="11" height="76" />
+</svg>
