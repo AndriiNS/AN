@@ -5,9 +5,9 @@ import { CV } from '../data/site';
 import { gsap, loaderDone, ScrollTrigger, scrollToId, useReducedMotion } from '../lib/motion';
 
 // three.js is big, so the 3D scene loads after the text is already on screen
-const HeroScene = lazy(() => import('../scenes/HeroScene'));
+const FactoryScene = lazy(() => import('../scenes/FactoryScene'));
 
-// where each stage starts on the 0..1 scroll progress (see HeroScene.jsx)
+// where each stage starts on the 0..1 scroll progress (see FactoryScene.jsx)
 const STAGE_STARTS = [0.05, 0.34, 0.64];
 
 function hasWebGL() {
@@ -29,8 +29,9 @@ export default function Hero() {
   const stageRef = useRef(null);
   const introRef = useRef(null);
   const captionsRef = useRef(null);
+  const stepsRef = useRef(null);
   // where the text is, so the 3D scene can use the free space above it on phones (px in the stage)
-  const layoutRef = useRef({ top: 64, introTop: 0, captionsTop: 0, height: 0 });
+  const layoutRef = useRef({ top: 64, introTop: 0, captionsTop: 0, stepsTop: 0, height: 0 });
   const barsRef = useRef([]);
   const progressRef = useRef(0); // 0..1 while the hero scrolls, read by the 3D scene
   const [stage, setStage] = useState(-1); // -1: intro text, 0..2: Build, Automate, Ship
@@ -60,8 +61,11 @@ export default function Hero() {
         top: header ? header.offsetHeight : 64,
         introTop: inner.offsetTop + introRef.current.offsetTop,
         captionsTop: captionsRef.current ? inner.offsetTop + captionsRef.current.offsetTop : inner.offsetTop + introRef.current.offsetTop,
+        stepsTop: stepsRef.current ? stepsRef.current.offsetTop : stage.clientHeight,
         height: stage.clientHeight,
       };
+      // the scene fades out just above the stage caption (see .hero__canvas in _hero.scss)
+      stage.style.setProperty('--text-top', `${layoutRef.current.captionsTop}px`);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -118,7 +122,7 @@ export default function Hero() {
         {webgl && sceneOn && (
           <div className="hero__canvas">
             <Suspense fallback={null}>
-              <HeroScene progressRef={progressRef} layoutRef={layoutRef} reduced={reduced} active={active} />
+              <FactoryScene progressRef={progressRef} layoutRef={layoutRef} reduced={reduced} active={active} />
             </Suspense>
           </div>
         )}
@@ -159,7 +163,7 @@ export default function Hero() {
         </div>
 
         {!reduced && (
-          <ol className="hero__steps" aria-label={t('hero.stagesLabel')}>
+          <ol ref={stepsRef} className="hero__steps" aria-label={t('hero.stagesLabel')}>
             {stages.map((s, i) => (
               <li key={i} className={stage >= i ? 'is-on' : ''}>
                 <span className="hero__step-name">{s.name}</span>

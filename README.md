@@ -7,7 +7,7 @@ Three languages (German, English, Ukrainian), a scroll-driven 3D scene and a few
 
 ## What's inside
 
-- **3D hero: Build → Automate → Ship.** A small web page made of soft 3D blocks tells the story while you scroll. A blueprint grows into a page block by block, a script scans it while tasks run along a conveyor through an `auto.py` gate, and finally the layout rebuilds itself into a phone and goes live. (`src/scenes/HeroScene.jsx`)
+- **3D hero: a web factory.** An isometric low-poly workshop where a conveyor belt never stops: a gantry builds pages from raw blocks, a scanner tunnel (`auto.py`) checks every page automatically, and finished pages rise into a phone that broadcasts "live". Scrolling flies the camera from station to station: Build → Automate → Ship. (`src/scenes/FactoryScene.jsx`)
 - **Three languages without reloads.** German lives at `/`, English at `/en`, Ukrainian at `/uk`. Headings flip like a split-flap departure board when the language changes. On the first visit the language is picked from the visitor's choice, browser languages and time zone, all in the browser, no IP lookups. (`src/lib/lang.js`, `src/components/FlapText.jsx`)
 - **Journey map.** A dotted map of Europe, generated once from Natural Earth data, with the route Khmelnytskyi → Kyiv → Hagen drawn by scroll. (`scripts/build-map.mjs`, `src/components/Journey.jsx`)
 - **Terminal.** Press the key left of <kbd>1</kbd> (works on any keyboard layout) and type `help`. Try `sudo hire-me`.
@@ -40,7 +40,7 @@ src/
   main.jsx, App.jsx       entry point, one route that reads language and page from the URL
   locales/                all texts: de.json, en.json, uk.json
   data/site.js            links, skills, CV files, Impressum data, SITE_URL
-  scenes/HeroScene.jsx    the 3D scene
+  scenes/FactoryScene.jsx the 3D web factory in the hero
   components/             Hero, About, Projects, Journey, Skills, Contact, Terminal, Loader…
   lib/                    motion (GSAP, Lenis, interaction lock), languages, routing, page meta
   pages/                  Home and the legal pages

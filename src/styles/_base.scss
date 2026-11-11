@@ -132,7 +132,7 @@ canvas {
   backface-visibility: hidden;
 }
 
-// Tag labels on the 3D scene (HeroScene.jsx)
+// Tag labels on the 3D scene (FactoryScene.jsx)
 .scene-tag {
   display: inline-block;
   transform: translate(0, -130%);
@@ -143,6 +143,9 @@ canvas {
   font-family: var(--font-mono);
   font-size: 12px;
   white-space: nowrap;
+  &--static {
+    transform: none;
+  }
   &--live {
     transform: none;
     background: var(--blue);

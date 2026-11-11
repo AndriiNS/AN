@@ -33,7 +33,7 @@ function markSeen() {
 
 // the page is "ready" when fonts and the 3D scene code are loaded
 function pageReady() {
-  const scene = import('../scenes/HeroScene');
+  const scene = import('../scenes/FactoryScene');
   const fonts = document.fonts?.ready ?? Promise.resolve();
   const timeout = new Promise((resolve) => setTimeout(resolve, MAX_WAIT_MS));
   return Promise.race([Promise.all([scene, fonts]), timeout]);

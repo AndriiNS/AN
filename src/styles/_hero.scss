@@ -26,6 +26,10 @@
     inset: 0;
     // the scene starts after the loader; let it appear softly
     animation: hero-canvas-in 0.8s ease-out both;
+    // the factory floor fades out before the stage bars at the bottom and under the
+    // header, so the model never runs into them
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(100% - 130px), transparent calc(100% - 64px));
+    mask-image: linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(100% - 130px), transparent calc(100% - 64px));
   }
 
   &__inner {
@@ -270,5 +274,27 @@
   .hero__actions .btn {
     padding: 0 14px;
     font-size: 0.875rem;
+  }
+}
+
+// wide screens: the text sits on the left, so the scene also fades out towards it
+@media (min-aspect-ratio: 23/20) {
+  .hero__canvas {
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(100% - 130px), transparent calc(100% - 64px)),
+      linear-gradient(to right, transparent 22%, #000 44%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(100% - 130px), transparent calc(100% - 64px)),
+      linear-gradient(to right, transparent 22%, #000 44%);
+    mask-composite: intersect;
+  }
+}
+
+// portrait screens: the caption sits under the scene, so the floor fades out above it
+@media (max-aspect-ratio: 23/20) {
+  .hero__canvas {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(var(--text-top, 70%) - 60px), transparent calc(var(--text-top, 70%) - 6px));
+    mask-image: linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(var(--text-top, 70%) - 60px), transparent calc(var(--text-top, 70%) - 6px));
   }
 }

@@ -5,3 +5,4 @@ dist-single
 .DS_Store
 .claude
 *.log
+Claude outputs/
