@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FlapText from './FlapText';
 import { CV } from '../data/site';
-import { gsap, ScrollTrigger, scrollToId, useReducedMotion } from '../lib/motion';
+import { gsap, loaderDone, ScrollTrigger, scrollToId, useReducedMotion } from '../lib/motion';
 
 // three.js is big, so the 3D scene loads after the text is already on screen
 const HeroScene = lazy(() => import('../scenes/HeroScene'));
@@ -26,13 +26,48 @@ export default function Hero() {
   const { t, i18n } = useTranslation();
   const reduced = useReducedMotion();
   const sectionRef = useRef(null);
+  const stageRef = useRef(null);
   const introRef = useRef(null);
+  const captionsRef = useRef(null);
+  // where the text is, so the 3D scene can use the free space above it on phones (px in the stage)
+  const layoutRef = useRef({ top: 64, introTop: 0, captionsTop: 0, height: 0 });
   const barsRef = useRef([]);
   const progressRef = useRef(0); // 0..1 while the hero scrolls, read by the 3D scene
   const [stage, setStage] = useState(-1); // -1: intro text, 0..2: Build, Automate, Ship
   const [active, setActive] = useState(true);
   const [webgl] = useState(hasWebGL);
+  // the 3D scene starts after the loader, so it does not slow the loader's animation down
+  const [sceneOn, setSceneOn] = useState(false);
   const stages = t('hero.stages', { returnObjects: true });
+
+  useEffect(() => {
+    let alive = true;
+    loaderDone.then(() => alive && setSceneOn(true));
+    return () => {
+      alive = false;
+    };
+  }, []);
+
+  // measure the text blocks (they change with the language, fonts and screen size)
+  useEffect(() => {
+    const stage = stageRef.current;
+    const measure = () => {
+      if (!introRef.current) return; // the page is being left
+      const inner = introRef.current.offsetParent;
+      if (!inner) return;
+      const header = document.querySelector('.site-header');
+      layoutRef.current = {
+        top: header ? header.offsetHeight : 64,
+        introTop: inner.offsetTop + introRef.current.offsetTop,
+        captionsTop: captionsRef.current ? inner.offsetTop + captionsRef.current.offsetTop : inner.offsetTop + introRef.current.offsetTop,
+        height: stage.clientHeight,
+      };
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    [stage, introRef.current, captionsRef.current].forEach((el) => el && ro.observe(el));
+    return () => ro.disconnect();
+  }, [reduced]);
 
   useEffect(() => {
     if (reduced) return undefined;
@@ -79,11 +114,11 @@ export default function Hero() {
 
   return (
     <section ref={sectionRef} className={`hero ${reduced ? 'hero--static' : ''}`} id="top" aria-labelledby="hero-name">
-      <div className="hero__stage">
-        {webgl && (
+      <div ref={stageRef} className="hero__stage">
+        {webgl && sceneOn && (
           <div className="hero__canvas">
             <Suspense fallback={null}>
-              <HeroScene progressRef={progressRef} reduced={reduced} active={active} />
+              <HeroScene progressRef={progressRef} layoutRef={layoutRef} reduced={reduced} active={active} />
             </Suspense>
           </div>
         )}
@@ -112,7 +147,7 @@ export default function Hero() {
 
           {/* one caption per stage, shown while that stage plays */}
           {!reduced && (
-            <div className="hero__captions" aria-live="polite">
+            <div ref={captionsRef} className="hero__captions" aria-live="polite">
               {stages.map((s, i) => (
                 <div key={i} className={`hero__caption ${stage === i ? 'is-active' : ''}`} aria-hidden={stage !== i}>
                   <p className="hero__caption-name">{s.name}</p>

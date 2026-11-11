@@ -302,11 +302,21 @@ function Phone({ progressRef }) {
 }
 
 //* -- The whole page, turned by scroll and mouse --
-function Page({ progressRef, reduced }) {
+// How much room the scene needs (in its own units) at each stage, for fitting it on phones:
+// the page with tags; the page plus the conveyor below it; the tall phone with its "live" tag.
+const NEED_W = { build: 7.4, automate: 7.8, ship: 3.6 };
+const NEED_H = { build: 5.2, automate: 6.4, ship: 7.0 };
+const CENTER = { build: 0.1, automate: -0.45, ship: 0.15 }; // vertical centre of that content
+
+function Page({ progressRef, layoutRef, reduced }) {
   const groupRef = useRef(null);
   const smoothProgress = useRef({ current: 0 });
+  const placed = useRef(false);
   const delays = useDelays();
   const { viewport, size } = useThree();
+
+  // wide screens: page on the right of the headline; narrow: above the text
+  const wide = viewport.aspect > 1.15;
 
   useFrame(({ pointer }, delta) => {
     // reduced motion: no scroll story, just the finished page
@@ -319,31 +329,46 @@ function Page({ progressRef, reduced }) {
     const ship = smooth(p, SHIP[0], SHIP[1]);
     const group = groupRef.current;
     // a calm three-quarter view while building, more depth while the script runs,
-    // and face to face with the visitor when it ships
-    const ry = -0.3 - auto * 0.25 + ship * 0.42 + (reduced ? 0 : pointer.x * 0.12);
+    // and face to face with the visitor when it ships (a bit flatter on phones, so it reads bigger)
+    const turn = wide ? 1 : 0.7;
+    const ry = (-0.3 - auto * 0.25) * turn + ship * 0.42 * (wide ? 1 : 0.6) + (reduced ? 0 : pointer.x * 0.12);
     const rx = 0.08 + auto * 0.22 - ship * 0.12 - (reduced ? 0 : pointer.y * 0.06);
     group.rotation.y = THREE.MathUtils.damp(group.rotation.y, ry, 4, delta);
     group.rotation.x = THREE.MathUtils.damp(group.rotation.x, rx, 4, delta);
-    // make room for the conveyor below the page; on phones the taller phone of the
-    // last stage moves down a little, so it stays clear of the header
-    const shift = auto * 0.35 - (wide ? 0 : ship * (short ? 1.25 : 0.95));
-    group.position.y = THREE.MathUtils.damp(group.position.y, basePosition[1] + shift * scale, 4, delta);
+
+    let scale;
+    let x;
+    let y;
+    if (wide) {
+      // the phone of the last stage must fit between the header and the stage bars
+      // (about 64 + 70 px), also on short landscape screens
+      const freeHeight = viewport.height * (1 - 134 / size.height) - 0.4;
+      scale = Math.min(0.9, viewport.width / 15.5, freeHeight / 6.5);
+      x = viewport.width * (viewport.aspect > 1.6 ? 0.23 : 0.2);
+      y = auto * 0.35 * scale;
+    } else {
+      // phones and tablets in portrait: use all the free space between the header and the
+      // text below. At the start that is the headline; once it fades, the shorter stage caption.
+      const L = layoutRef.current;
+      const k = viewport.height / size.height; // scene units per pixel
+      const textTop = L.height ? lerp(L.introTop, L.captionsTop, smooth(p, 0, 0.08)) : size.height * 0.45;
+      const top = (L.top || 64) + 10;
+      const bottom = textTop - 14;
+      const pick = (v) => lerp(lerp(v.build, v.automate, auto), v.ship, ship);
+      scale = Math.max(0.1, Math.min((viewport.width * 0.96) / pick(NEED_W), ((bottom - top) * k) / pick(NEED_H)));
+      x = 0;
+      y = (size.height / 2 - (top + bottom) / 2) * k - pick(CENTER) * scale;
+    }
+    // first frame: jump straight to the right place, afterwards move smoothly
+    const ease = placed.current ? (v, to) => THREE.MathUtils.damp(v, to, 6, delta) : (v, to) => to;
+    placed.current = true;
+    group.scale.setScalar(ease(group.scale.x, scale));
+    group.position.x = ease(group.position.x, x);
+    group.position.y = ease(group.position.y, y);
   });
 
-  // wide screens: page on the right of the headline; narrow: above the text
-  const wide = viewport.aspect > 1.15;
-  // short portrait screens: a smaller page, pushed further up, so the text below stays free
-  const short = !wide && size.height < 700;
-  // on wide screens the phone of the last stage (6.5 units tall) must fit between the
-  // header and the stage bars (about 64 + 70 px), also on short landscape screens
-  const freeHeight = viewport.height * (1 - 134 / size.height) - 0.4;
-  const scale = wide
-    ? Math.min(0.9, viewport.width / 15.5, freeHeight / 6.5)
-    : Math.min(short ? 0.34 : 0.4, viewport.width / (short ? 12 : 11));
-  const basePosition = wide ? [viewport.width * (viewport.aspect > 1.6 ? 0.23 : 0.2), 0, 0] : [0, viewport.height * (short ? 0.29 : 0.27), 0];
-
   return (
-    <group ref={groupRef} position={basePosition} scale={scale}>
+    <group ref={groupRef} scale={0.4}>
       {BLOCKS.map((block, i) => (
         <Block key={block.id} block={block} index={i} delay={delays[i]} progressRef={smoothProgress.current} />
       ))}
@@ -356,11 +381,14 @@ function Page({ progressRef, reduced }) {
 }
 
 //* -- Canvas, light and shadow --
-export default function HeroScene({ progressRef, reduced, active }) {
+// phones and tablets: a little lower resolution, so the scene keeps a steady frame rate
+const TOUCH = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+
+export default function HeroScene({ progressRef, layoutRef, reduced, active }) {
   return (
     <Canvas
       shadows
-      dpr={[1, 1.75]}
+      dpr={[1, TOUCH ? 1.5 : 1.75]}
       frameloop={active ? 'always' : 'never'}
       camera={{ position: [0, 0, 14], fov: 32 }}
       gl={{ antialias: true, alpha: true, toneMapping: THREE.NeutralToneMapping }}
@@ -371,7 +399,7 @@ export default function HeroScene({ progressRef, reduced, active }) {
         position={[-5, 8, 9]}
         intensity={1.8}
         castShadow
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={TOUCH ? [512, 512] : [1024, 1024]}
         shadow-camera-left={-8}
         shadow-camera-right={8}
         shadow-camera-top={8}
@@ -386,7 +414,7 @@ export default function HeroScene({ progressRef, reduced, active }) {
         <Lightformer form="circle" intensity={0.6} color="#ffe7a0" position={[6, -2, 3]} rotation-y={-Math.PI / 2} scale={3} />
       </Environment>
 
-      <Page progressRef={progressRef} reduced={reduced} />
+      <Page progressRef={progressRef} layoutRef={layoutRef} reduced={reduced} />
       <ContactShadows position={[0, -3.6, 0]} opacity={0.28} scale={24} blur={2.8} far={9} resolution={512} color="#1b1e26" />
     </Canvas>
   );

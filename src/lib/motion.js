@@ -27,6 +27,15 @@ let lenis = null;
 
 export const getLenis = () => lenis;
 
+//* -- Loader finished --
+// Heavy work (starting the 3D scene) waits until the loader is gone, so it does not
+// compete with the loader's animation. Resolved by Loader.jsx, also when it is skipped.
+let resolveLoader;
+export const loaderDone = new Promise((resolve) => {
+  resolveLoader = resolve;
+});
+export const markLoaderDone = () => resolveLoader();
+
 //* -- Interaction lock --
 // While the loader or the page curtain is on screen, the visitor can't scroll,
 // click, type or open the terminal: the page underneath is still getting ready.

@@ -8,11 +8,10 @@
 //   - the curtain slides away upwards.
 // Switching language keeps you on the same page, so it never shows the curtain
 // (headings flip instead). Browser back/forward to another page plays the second half.
-import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useHref, useLocation, useNavigate } from 'react-router-dom';
-import LogoMark from '../components/LogoMark';
-import { gsap, getLenis, lockInteraction, prefersReducedMotion } from './motion';
-import { logoIntro, resetLogo } from './logoIntro';
+import GrowMark from '../components/GrowMark';
+import { getLenis, lockInteraction, prefersReducedMotion } from './motion';
 import { parsePath } from './lang';
 
 export function useRoute() {
@@ -52,13 +51,19 @@ function scrollTop() {
   window.scrollTo(0, 0);
 }
 
+const EASE = 'cubic-bezier(0.65, 0, 0.35, 1)';
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export function PageTransitions({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
   const curtainRef = useRef(null);
-  const markRef = useRef(null);
   const busy = useRef(false);
   const unlockRef = useRef(null);
+  const ownNavigation = useRef(false);
+  const lastPage = useRef(parsePath(location.pathname).page);
+  // changing the key mounts a fresh mark, which plays its growth animation again
+  const [markRun, setMarkRun] = useState(0);
 
   // no scrolling or clicking while the curtain is up
   const lock = () => {
@@ -69,27 +74,27 @@ export function PageTransitions({ children }) {
     unlockRef.current?.();
     unlockRef.current = null;
   };
-  const ownNavigation = useRef(false);
-  const lastPage = useRef(parsePath(location.pathname).page);
 
-  const reveal = useCallback(() => {
-    const curtain = curtainRef.current;
-    gsap.to(curtain, {
-      yPercent: -100,
-      duration: 0.6,
-      ease: 'power3.inOut',
-      delay: 0.1,
-      onComplete: () => {
-        gsap.set(curtain, { visibility: 'hidden', yPercent: 100 });
-        resetLogo(markRef.current.querySelector('svg'));
-        busy.current = false;
-        unlock();
-      },
+  // The curtain moves with the Web Animations API (transform only), so the browser runs it
+  // off the main thread: smooth on phones too, even while the next page is being built.
+  const slide = (from, to, options) =>
+    curtainRef.current.animate([{ transform: `translateY(${from})` }, { transform: `translateY(${to})` }], {
+      easing: EASE,
+      fill: 'forwards',
+      ...options,
     });
-  }, []);
+
+  const reveal = useCallback(async () => {
+    const curtain = curtainRef.current;
+    await slide('0%', '-100%', { duration: 600, delay: 100 }).finished.catch(() => {});
+    curtain.getAnimations().forEach((a) => a.cancel());
+    curtain.style.visibility = 'hidden';
+    busy.current = false;
+    unlock();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const go = useCallback(
-    (to) => {
+    async (to) => {
       const current = `${location.pathname}${location.search}`;
       if (to === current || busy.current) return;
       const samePage = parsePath(to).page === parsePath(location.pathname).page;
@@ -102,20 +107,17 @@ export function PageTransitions({ children }) {
       ownNavigation.current = true;
       lock();
       const curtain = curtainRef.current;
-      const svg = markRef.current.querySelector('svg');
-      gsap.set(curtain, { visibility: 'visible', yPercent: 100 });
-      gsap
-        .timeline()
-        .to(curtain, { yPercent: 0, duration: 0.55, ease: 'power3.inOut' })
-        .add(logoIntro(gsap, svg).timeScale(2.2), 0.15)
-        .add(() => {
-          navigate(to);
-          scrollTop();
-          // give the new page one frame to lay out, then lift the curtain
-          requestAnimationFrame(() => requestAnimationFrame(reveal));
-        });
+      curtain.getAnimations().forEach((a) => a.cancel());
+      curtain.style.visibility = 'visible';
+      setMarkRun((n) => n + 1);
+      // cover the page, and let the logo grow for a moment
+      await Promise.all([slide('100%', '0%', { duration: 550 }).finished.catch(() => {}), wait(850)]);
+      navigate(to);
+      scrollTop();
+      // give the new page one frame to lay out, then lift the curtain
+      requestAnimationFrame(() => requestAnimationFrame(reveal));
     },
-    [location.pathname, location.search, navigate, reveal],
+    [location.pathname, location.search, navigate, reveal], // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   // back/forward buttons: the page already changed, so show the second half
@@ -132,22 +134,22 @@ export function PageTransitions({ children }) {
     if (prefersReducedMotion()) return;
     busy.current = true;
     lock();
-    gsap.set(curtainRef.current, { visibility: 'visible', yPercent: 0 });
-    reveal();
+    const curtain = curtainRef.current;
+    curtain.getAnimations().forEach((a) => a.cancel());
+    curtain.style.visibility = 'visible';
+    curtain.style.transform = 'translateY(0)';
+    reveal().then(() => {
+      curtain.style.transform = '';
+    });
   }, [location.pathname, reveal]);
 
-  useEffect(() => {
-    gsap.set(curtainRef.current, { visibility: 'hidden', yPercent: 100 });
-    return () => unlockRef.current?.();
-  }, []);
+  useEffect(() => () => unlockRef.current?.(), []);
 
   return (
     <TransitionContext.Provider value={{ go }}>
       {children}
       <div ref={curtainRef} className="curtain" aria-hidden="true">
-        <div ref={markRef} className="curtain__mark">
-          <LogoMark className="logo-mark--on-dark" />
-        </div>
+        <div className="curtain__mark">{markRun > 0 && <GrowMark key={markRun} speed={2.2} className="grow-mark--on-dark" />}</div>
       </div>
     </TransitionContext.Provider>
   );

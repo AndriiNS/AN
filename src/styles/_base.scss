@@ -188,6 +188,104 @@ body.is-switching main h3 {
   }
 }
 
+// ---------- The growing AN mark (GrowMark.jsx), used by the loader and the curtain ----------
+// Every part is a box cut into shape (clip-path) inside a 100 × 100 frame, so the
+// percentages below are the same numbers as the SVG logo. Only `transform` and
+// `opacity` are animated: the compositor runs them smoothly even on a busy page.
+.grow-mark {
+  --t: var(--grow-time, 1);
+  position: relative;
+  aspect-ratio: 1;
+  color: var(--ink);
+
+  &__part {
+    position: absolute;
+    inset: 0;
+    background: currentColor;
+    transform-origin: 50% 88%; // the baseline of the letters
+    will-change: transform;
+    animation: grow-up calc(0.6s * var(--t)) cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  &__leg {
+    clip-path: polygon(4.5% 88%, 16.32% 88%, 45.5% 14.08%, 45.5% 12%, 34.5% 12%);
+    animation-delay: calc(0.15s * var(--t));
+  }
+  &__diagonal {
+    clip-path: polygon(34.5% 14.6%, 34.5% 12%, 45.5% 12%, 83.5% 88%, 71.2% 88%);
+    animation-delay: calc(0.27s * var(--t));
+  }
+  &__stem {
+    inset: 12% auto auto 72.5%;
+    width: 11%;
+    height: 76%;
+    transform-origin: 50% 100%;
+    animation-delay: calc(0.39s * var(--t));
+  }
+  &__bar {
+    inset: 56.5% auto auto 18.06%;
+    width: 21.94%;
+    height: 11%;
+    transform-origin: 0 50%;
+    animation: grow-right calc(0.3s * var(--t)) cubic-bezier(0.22, 1, 0.36, 1) calc(0.6s * var(--t)) both;
+  }
+  // the yellow stem grows last, jumps above the others and settles
+  &__cursor {
+    inset: 12% auto auto 34.5%;
+    width: 11%;
+    height: 76%;
+    background: var(--cursor);
+    transform-origin: 50% 100%;
+    animation: grow-cursor calc(0.95s * var(--t)) ease-out calc(0.75s * var(--t)) both;
+  }
+  // while the page is still loading, the stem blinks like a text cursor
+  &.is-waiting &__cursor {
+    animation:
+      grow-cursor calc(0.95s * var(--t)) ease-out calc(0.75s * var(--t)) both,
+      caret-blink 1s steps(1) calc(2.2s * var(--t)) infinite;
+  }
+
+  &--on-dark {
+    color: var(--surface);
+    .grow-mark__cursor {
+      background: var(--yellow);
+    }
+  }
+}
+
+@keyframes grow-up {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes grow-right {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes grow-cursor {
+  0% {
+    transform: scaleY(0);
+  }
+  35% {
+    transform: scaleY(1.22);
+  }
+  60% {
+    transform: scaleY(0.95);
+  }
+  80% {
+    transform: scaleY(1.04);
+  }
+  100% {
+    transform: none;
+  }
+}
+
 // ---------- First-visit loader (Loader.jsx) ----------
 .loader {
   position: fixed;
@@ -195,19 +293,21 @@ body.is-switching main h3 {
   z-index: 200;
   display: grid;
   place-items: center;
-  background: var(--paper);
   // catches every click and touch, so nothing underneath reacts while it loads
   cursor: progress;
   touch-action: none;
 }
+// the backdrop is its own layer, so it can fade with opacity (cheap) instead of a colour change
+.loader__backdrop {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  will-change: opacity;
+}
 .loader__mark {
+  position: relative;
   width: clamp(96px, 14vw, 132px);
-  aspect-ratio: 1;
   will-change: transform;
-  .logo-mark {
-    width: 100%;
-    height: 100%;
-  }
 }
 
 // while the loader runs, the header logo waits for the flying mark
@@ -240,15 +340,11 @@ html.is-locked {
   place-items: center;
   background: var(--ink);
   visibility: hidden;
+  transform: translateY(100%);
   will-change: transform;
 }
 .curtain__mark {
   width: clamp(72px, 10vw, 104px);
-  aspect-ratio: 1;
-  .logo-mark {
-    width: 100%;
-    height: 100%;
-  }
 }
 .logo-mark--on-dark {
   fill: var(--surface);

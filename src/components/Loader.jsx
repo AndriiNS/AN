@@ -1,15 +1,19 @@
 // First-visit loader "Growth":
 //   1. the strokes of the AN mark grow up from the baseline, the yellow stem last
-//   2. the mark gives a small spring
-//   3. when the page is ready, it flies into the header and the loader fades away
-// The intro itself lives in src/lib/logoIntro.js.
+//   2. while the page is still loading, the stem blinks like a text cursor
+//   3. when the page is ready, the mark gives a small spring, flies into the header
+//      and the backdrop fades away
+// Every movement is a CSS or Web Animations transform/opacity, which the browser runs
+// off the main thread: it stays smooth on slow phones and slow connections, while the
+// JavaScript and the 3D scene are still being loaded and parsed.
 // Skipped for "reduce motion" and after the first visit in this browser tab.
 import { useLayoutEffect, useRef, useState } from 'react';
-import LogoMark from './LogoMark';
-import { gsap, lockInteraction, prefersReducedMotion } from '../lib/motion';
-import { logoIntro, resetLogo } from '../lib/logoIntro';
+import GrowMark from './GrowMark';
+import { lockInteraction, markLoaderDone, prefersReducedMotion } from '../lib/motion';
 
 const SEEN_KEY = 'an-loader-seen';
+const INTRO_MS = 1750; // the growth animation, see .grow-mark in _base.scss
+const MAX_WAIT_MS = 6000; // never keep the visitor waiting longer than this for the 3D scene
 
 function alreadySeen() {
   try {
@@ -27,67 +31,87 @@ function markSeen() {
   }
 }
 
-// the page is "ready" when fonts and the 3D scene code are loaded (but never wait longer than 4 s)
+// the page is "ready" when fonts and the 3D scene code are loaded
 function pageReady() {
   const scene = import('../scenes/HeroScene');
   const fonts = document.fonts?.ready ?? Promise.resolve();
-  const timeout = new Promise((resolve) => setTimeout(resolve, 4000));
+  const timeout = new Promise((resolve) => setTimeout(resolve, MAX_WAIT_MS));
   return Promise.race([Promise.all([scene, fonts]), timeout]);
 }
 
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const EASE = 'cubic-bezier(0.65, 0, 0.35, 1)';
+
 export default function Loader() {
   const [visible, setVisible] = useState(() => !prefersReducedMotion() && !alreadySeen());
-  const overlayRef = useRef(null);
   const markRef = useRef(null);
+  const backdropRef = useRef(null);
 
   useLayoutEffect(() => {
-    if (!visible) return undefined;
+    if (!visible) {
+      markLoaderDone();
+      return undefined;
+    }
     const root = document.documentElement;
     root.classList.add('is-loading');
     // nothing can be scrolled or clicked until the loader is gone
     const unlock = lockInteraction();
     window.scrollTo(0, 0);
-    const ready = pageReady();
+    let cancelled = false;
+    const animations = [];
 
-    const ctx = gsap.context(() => {
-      const svg = markRef.current.querySelector('svg');
-      const tl = logoIntro(gsap, svg);
-      tl.to(markRef.current, { scale: 1.08, duration: 0.12, yoyo: true, repeat: 1, ease: 'power1.inOut' }, '+=0.05');
-      // wait here until the page is ready
-      tl.add(() => {
-        tl.pause();
-        ready.then(() => tl.resume());
-      });
+    const finish = () => {
+      root.classList.remove('is-loading');
+      unlock();
+      markSeen();
+      markLoaderDone();
+      setVisible(false);
+    };
 
-      // 3. fly into the header logo and fade the backdrop
-      tl.add(() => {
-        resetLogo(svg);
-        const target = document.querySelector('.site-header .logo-mark');
-        const from = markRef.current.getBoundingClientRect();
-        const to = target?.getBoundingClientRect();
-        const flight = gsap.timeline({
-          onComplete: () => {
-            root.classList.remove('is-loading');
-            unlock();
-            markSeen();
-            setVisible(false);
-          },
-        });
-        if (to && to.width) {
-          flight.to(markRef.current, {
-            x: to.left + to.width / 2 - (from.left + from.width / 2),
-            y: to.top + to.height / 2 - (from.top + from.height / 2),
-            scale: to.width / from.width,
-            duration: 0.7,
-            ease: 'power3.inOut',
-          });
-        }
-        flight.to(overlayRef.current, { backgroundColor: 'rgba(238, 240, 243, 0)', duration: 0.5, ease: 'power1.out' }, 0.15);
+    const fly = async () => {
+      const mark = markRef.current;
+      // stop blinking, so the stem is visible during the flight
+      mark.firstElementChild.classList.remove('is-waiting');
+      const target = document.querySelector('.site-header .logo-mark');
+      // a small spring before take-off
+      const spring = mark.animate([{ transform: 'none' }, { transform: 'scale(1.08)' }, { transform: 'none' }], {
+        duration: 240,
+        easing: 'ease-in-out',
       });
-    }, overlayRef);
+      animations.push(spring);
+      await spring.finished;
+      if (cancelled) return;
+
+      const from = mark.getBoundingClientRect();
+      const to = target?.getBoundingClientRect();
+      if (to && to.width) {
+        const dx = to.left + to.width / 2 - (from.left + from.width / 2);
+        const dy = to.top + to.height / 2 - (from.top + from.height / 2);
+        const flight = mark.animate(
+          [{ transform: 'none' }, { transform: `translate(${dx}px, ${dy}px) scale(${to.width / from.width})` }],
+          { duration: 700, easing: EASE, fill: 'forwards' },
+        );
+        animations.push(flight);
+      }
+      const fade = backdropRef.current.animate([{ opacity: 1 }, { opacity: 0 }], {
+        duration: 500,
+        delay: 150,
+        easing: 'ease-out',
+        fill: 'forwards',
+      });
+      animations.push(fade);
+      await Promise.all(animations.map((a) => a.finished));
+      if (!cancelled) finish();
+    };
+
+    Promise.all([pageReady(), wait(INTRO_MS)]).then(() => {
+      // one frame later, so the header is laid out before we measure it
+      if (!cancelled) requestAnimationFrame(() => fly().catch(() => {}));
+    });
 
     return () => {
-      ctx.revert();
+      cancelled = true;
+      animations.forEach((a) => a.cancel());
       root.classList.remove('is-loading');
       unlock();
     };
@@ -96,9 +120,10 @@ export default function Loader() {
   if (!visible) return null;
 
   return (
-    <div ref={overlayRef} className="loader" aria-hidden="true">
+    <div className="loader" aria-hidden="true">
+      <div ref={backdropRef} className="loader__backdrop" />
       <div ref={markRef} className="loader__mark">
-        <LogoMark />
+        <GrowMark waiting />
       </div>
     </div>
   );

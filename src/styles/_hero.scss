@@ -24,6 +24,8 @@
   &__canvas {
     position: absolute;
     inset: 0;
+    // the scene starts after the loader; let it appear softly
+    animation: hero-canvas-in 0.8s ease-out both;
   }
 
   &__inner {
@@ -239,5 +241,34 @@
     li {
       font-size: 0.75rem;
     }
+  }
+}
+
+@keyframes hero-canvas-in {
+  from {
+    opacity: 0;
+  }
+}
+
+// phones: both buttons stay on one line in every language, so the text block stays
+// short and the 3D scene above it keeps its room
+@media (max-width: 560px) {
+  .hero__actions {
+    flex-wrap: nowrap;
+    gap: 10px;
+    .btn {
+      flex: 0 1 auto;
+      min-width: 0;
+      min-height: 46px;
+      padding: 0 18px;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+  }
+}
+@media (max-width: 360px) {
+  .hero__actions .btn {
+    padding: 0 14px;
+    font-size: 0.875rem;
   }
 }
