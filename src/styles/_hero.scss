@@ -28,8 +28,20 @@
     animation: hero-canvas-in 0.8s ease-out both;
     // the factory floor fades out before the stage bars at the bottom and under the
     // header, so the model never runs into them
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(100% - 130px), transparent calc(100% - 64px));
-    mask-image: linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(100% - 130px), transparent calc(100% - 64px));
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--header-h),
+      #000 calc(100% - 130px),
+      transparent calc(100% - 64px)
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--header-h),
+      #000 calc(100% - 130px),
+      transparent calc(100% - 64px)
+    );
   }
 
   &__inner {
@@ -65,7 +77,7 @@
 
   &__tagline {
     margin-top: 28px;
-    max-width: 26ch;
+    max-width: 42ch;
     font-size: var(--fs-md);
     line-height: 1.4;
   }
@@ -86,7 +98,9 @@
     grid-area: 1 / 1;
     opacity: 0;
     transform: translateY(16px);
-    transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+    transition:
+      opacity 0.5s var(--ease),
+      transform 0.5s var(--ease);
     &.is-active {
       opacity: 1;
       transform: none;
@@ -144,7 +158,7 @@
   }
 
   &__step-name::before {
-    content: counter(step) '  ';
+    content: counter(step) "  ";
     white-space: pre;
     color: var(--blue);
     font-weight: 500;
@@ -281,11 +295,23 @@
 @media (min-aspect-ratio: 23/20) {
   .hero__canvas {
     -webkit-mask-image:
-      linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(100% - 130px), transparent calc(100% - 64px)),
+      linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 var(--header-h),
+        #000 calc(100% - 130px),
+        transparent calc(100% - 64px)
+      ),
       linear-gradient(to right, transparent 22%, #000 44%);
     -webkit-mask-composite: source-in;
     mask-image:
-      linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(100% - 130px), transparent calc(100% - 64px)),
+      linear-gradient(
+        to bottom,
+        transparent 0,
+        #000 var(--header-h),
+        #000 calc(100% - 130px),
+        transparent calc(100% - 64px)
+      ),
       linear-gradient(to right, transparent 22%, #000 44%);
     mask-composite: intersect;
   }
@@ -294,7 +320,19 @@
 // portrait screens: the caption sits under the scene, so the floor fades out above it
 @media (max-aspect-ratio: 23/20) {
   .hero__canvas {
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(var(--text-top, 70%) - 60px), transparent calc(var(--text-top, 70%) - 6px));
-    mask-image: linear-gradient(to bottom, transparent 0, #000 var(--header-h), #000 calc(var(--text-top, 70%) - 60px), transparent calc(var(--text-top, 70%) - 6px));
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--header-h),
+      #000 calc(var(--text-top, 70%) - 60px),
+      transparent calc(var(--text-top, 70%) - 6px)
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000 var(--header-h),
+      #000 calc(var(--text-top, 70%) - 60px),
+      transparent calc(var(--text-top, 70%) - 6px)
+    );
   }
 }

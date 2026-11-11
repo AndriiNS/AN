@@ -39,7 +39,7 @@
   },
   "projects": {
     "title": "Selected work",
-    "intro": "Most of my commercial code is under NDA, so here I describe what I built and why it mattered.",
+    "intro": "Client websites I built as a freelancer, most of them together with the Apex Webcraft studio in Ukraine, and the internal tools I build at my jobs.",
     "live": "Live site",
     "code": "Code",
     "nda": "Internal tool, code under NDA",
@@ -105,11 +105,66 @@
           "ScrollReveal"
         ]
       }
+    ],
+    "workTitle": "At my jobs",
+    "roleTitle": "What I did",
+    "caseStudy": "Studio case study",
+    "hosted": "Hosted in Ukraine: from abroad the site may load a little slower.",
+    "previewAlt": "Home page of {{name}}",
+    "cases": [
+      {
+        "id": "christmas",
+        "name": "Christmas Tree",
+        "kind": "Online store · Ukraine",
+        "summary": "An online store for a Ukrainian manufacturer of artificial Christmas trees: collections, choosing a tree by height, product pages and a separate offer for wholesale buyers.",
+        "role": [
+          "Development of the store front end and catalogue",
+          "Collections, height filter, favourites and cart",
+          "Responsive layout, fast pages, cookie consent with separate choices"
+        ],
+        "stack": [
+          "Next.js",
+          "WooCommerce",
+          "JavaScript"
+        ]
+      },
+      {
+        "id": "cardetail",
+        "name": "ApexDetail",
+        "kind": "Car detailing studio · Khmelnytskyi",
+        "summary": "A website for a car detailing studio: services that are easy to compare, prices right on the home page, a portfolio of results and a quick way to book.",
+        "role": [
+          "WordPress development from the design",
+          "Service cards, price block, portfolio and FAQ",
+          "Booking forms with a phone field, analytics"
+        ],
+        "stack": [
+          "WordPress",
+          "PHP",
+          "JavaScript"
+        ]
+      },
+      {
+        "id": "apex",
+        "name": "Apex Webcraft",
+        "kind": "Web studio · Ukraine",
+        "summary": "The website of the web studio I work with as a freelancer: cases, services, prices and a blog, built to bring in clients from Google and AI search.",
+        "role": [
+          "Took part in the development",
+          "Case pages and content sections",
+          "Animations and responsive layout"
+        ],
+        "stack": [
+          "WordPress",
+          "JavaScript",
+          "SCSS"
+        ]
+      }
     ]
   },
   "journey": {
     "title": "Khmelnytskyi → Kyiv → Hagen",
-    "intro": "Three cities, four years, three jobs.",
+    "intro": "Three cities, four years, three jobs and freelance projects alongside.",
     "cities": {
       "khmelnytskyi": "Khmelnytskyi",
       "kyiv": "Kyiv",
@@ -139,6 +194,12 @@
         "title": "Middle Web Developer",
         "place": "Company under NDA, hybrid",
         "text": "Internal tools and automation, a Python website parser, technical research and payment integrations."
+      },
+      {
+        "date": "Alongside, ongoing",
+        "title": "Freelance web developer",
+        "place": "Apex Webcraft studio and my own clients, remote",
+        "text": "Websites for small businesses: an online store, a car detailing studio and the studio's own website."
       }
     ],
     "arrived": "Now at home in Hagen"

@@ -61,7 +61,7 @@ export default function Terminal({ open, onClose }) {
       case 'projects':
         result.push(
           out((t) =>
-            [...t('projects.featured', { returnObjects: true }), ...t('projects.earlier', { returnObjects: true })]
+            [...t('projects.cases', { returnObjects: true }), ...t('projects.featured', { returnObjects: true }), ...t('projects.earlier', { returnObjects: true })]
               .map((p) => `• ${p.name}: ${p.summary}`)
               .join('\n'),
           ),

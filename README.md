@@ -9,6 +9,7 @@ Three languages (German, English, Ukrainian), a scroll-driven 3D scene and a few
 
 - **3D hero: a web factory.** An isometric low-poly workshop where a conveyor belt never stops: a gantry builds pages from raw blocks, a scanner tunnel (`auto.py`) checks every page automatically, and finished pages rise into a phone that broadcasts "live". Scrolling flies the camera from station to station: Build → Automate → Ship. (`src/scenes/FactoryScene.jsx`)
 - **Three languages without reloads.** German lives at `/`, English at `/en`, Ukrainian at `/uk`. Headings flip like a split-flap departure board when the language changes. On the first visit the language is picked from the visitor's choice, browser languages and time zone, all in the browser, no IP lookups. (`src/lib/lang.js`, `src/components/FlapText.jsx`)
+- **Client work.** Real websites I built as a freelancer, shown in browser-window previews: hovering scrolls the screenshot down the page. (`src/components/Projects.jsx`)
 - **Journey map.** A dotted map of Europe, generated once from Natural Earth data, with the route Khmelnytskyi → Kyiv → Hagen drawn by scroll. (`scripts/build-map.mjs`, `src/components/Journey.jsx`)
 - **Terminal.** Press the key left of <kbd>1</kbd> (works on any keyboard layout) and type `help`. Try `sudo hire-me`.
 - **Logo loader and page transitions.** The AN monogram grows stroke by stroke and flies into the header; legal pages open behind a curtain. Nothing on the page can be scrolled or clicked while they play.
@@ -47,6 +48,7 @@ src/
   styles/                 SCSS, one file per area, design tokens in _tokens.scss
 public/
   _headers, _redirects    Cloudflare headers and redirects
+  projects/               screenshots of client websites (WebP, 1240 and 620 px wide)
   favicon.svg, og-image.png, apple-touch-icon.png, cv/
 scripts/
   prerender.mjs           writes one HTML file per address after the Vite build

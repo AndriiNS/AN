@@ -39,8 +39,8 @@
   },
   "projects": {
     "title": "Ausgewählte Arbeiten",
-    "intro": "Der Großteil meines Codes steht unter NDA. Deshalb beschreibe ich hier, was ich gebaut habe und warum es wichtig war.",
-    "live": "Live-Seite",
+    "intro": "Kundenwebsites, die ich als Freelancer gebaut habe, die meisten zusammen mit dem Webstudio Apex Webcraft in der Ukraine, und interne Tools aus meinen Jobs.",
+    "live": "Website",
     "code": "Code",
     "nda": "Internes Tool, Code unter NDA",
     "featured": [
@@ -105,11 +105,66 @@
           "ScrollReveal"
         ]
       }
+    ],
+    "workTitle": "In meinen Jobs",
+    "roleTitle": "Meine Aufgaben",
+    "caseStudy": "Case-Studie des Studios",
+    "hosted": "Server in der Ukraine: aus dem Ausland lädt die Seite eventuell etwas langsamer.",
+    "previewAlt": "Startseite von {{name}}",
+    "cases": [
+      {
+        "id": "christmas",
+        "name": "Christmas Tree",
+        "kind": "Onlineshop · Ukraine",
+        "summary": "Ein Onlineshop für einen ukrainischen Hersteller künstlicher Weihnachtsbäume: Kollektionen, Auswahl nach Höhe, Produktseiten und ein eigenes Angebot für Großhändler.",
+        "role": [
+          "Entwicklung von Shop-Frontend und Katalog",
+          "Kollektionen, Höhenfilter, Merkliste und Warenkorb",
+          "Responsives Layout, schnelle Seiten, Cookie-Einwilligung mit getrennter Auswahl"
+        ],
+        "stack": [
+          "Next.js",
+          "WooCommerce",
+          "JavaScript"
+        ]
+      },
+      {
+        "id": "cardetail",
+        "name": "ApexDetail",
+        "kind": "Fahrzeugaufbereitung · Chmelnyzkyj",
+        "summary": "Website für ein Studio für Fahrzeugaufbereitung: Leistungen, die man leicht vergleichen kann, Preise direkt auf der Startseite, Arbeitsbeispiele und eine schnelle Terminanfrage.",
+        "role": [
+          "WordPress-Entwicklung nach Design",
+          "Leistungskarten, Preisblock, Referenzen und FAQ",
+          "Anfrageformulare mit Telefonfeld, Analytics"
+        ],
+        "stack": [
+          "WordPress",
+          "PHP",
+          "JavaScript"
+        ]
+      },
+      {
+        "id": "apex",
+        "name": "Apex Webcraft",
+        "kind": "Webstudio · Ukraine",
+        "summary": "Die Website des Webstudios, mit dem ich als Freelancer arbeite: Cases, Leistungen, Preise und Blog, gebaut, um Kunden über Google und KI-Suche zu gewinnen.",
+        "role": [
+          "Mitarbeit an der Entwicklung",
+          "Case-Seiten und Inhaltsbereiche",
+          "Animationen und responsives Layout"
+        ],
+        "stack": [
+          "WordPress",
+          "JavaScript",
+          "SCSS"
+        ]
+      }
     ]
   },
   "journey": {
     "title": "Chmelnyzkyj → Kyjiw → Hagen",
-    "intro": "Drei Städte, vier Jahre, drei Jobs.",
+    "intro": "Drei Städte, vier Jahre, drei Jobs und nebenbei Freelance-Projekte.",
     "cities": {
       "khmelnytskyi": "Chmelnyzkyj",
       "kyiv": "Kyjiw",
@@ -139,6 +194,12 @@
         "title": "Middle Web Developer",
         "place": "Unternehmen unter NDA, hybrid",
         "text": "Interne Tools und Automatisierung, ein Website-Parser in Python, technische Recherche und Zahlungsintegrationen."
+      },
+      {
+        "date": "Parallel, laufend",
+        "title": "Freelance-Webentwickler",
+        "place": "Webstudio Apex Webcraft und eigene Kunden, remote",
+        "text": "Websites für kleine Unternehmen: ein Onlineshop, ein Studio für Fahrzeugaufbereitung und die Website des Studios selbst."
       }
     ],
     "arrived": "Jetzt zu Hause in Hagen"

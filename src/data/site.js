@@ -23,6 +23,16 @@ export const CV = {
   uk: 'cv/Andrii_Naumov_CV_EN.pdf',
 };
 
+// Client websites (freelance, mostly with the Apex Webcraft studio). Texts are in
+// src/locales/*.json under projects.cases, matched by id. Screenshots live in
+// public/projects/: <id>.webp (1240 px wide) and <id>-620.webp; `ratio` is height / width
+// of the screenshot, used to scroll the preview on hover.
+export const CASES = {
+  christmas: { url: 'https://christmas-tree.in.ua/', caseUrl: 'https://apexwebcraft.com.ua/cases/christmas/', ratio: 980 / 1240, ua: true },
+  cardetail: { url: 'https://cardetail.km.ua/', caseUrl: 'https://apexwebcraft.com.ua/cases/apexdetail/', ratio: 980 / 1240, ua: true },
+  apex: { url: 'https://apexwebcraft.com.ua/', ratio: 889 / 1240, ua: true },
+};
+
 // Links for the projects in src/locales/*.json (matched by id)
 export const PROJECT_LINKS = {
   parser: {},
