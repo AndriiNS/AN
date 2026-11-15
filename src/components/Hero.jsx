@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FlapText from './FlapText';
 import { CV } from '../data/site';
-import { gsap, loaderDone, ScrollTrigger, scrollToId, useReducedMotion } from '../lib/motion';
+import { gsap, markSceneReady, ScrollTrigger, scrollToId, useReducedMotion } from '../lib/motion';
 
 // three.js is big, so the 3D scene loads after the text is already on screen
 const FactoryScene = lazy(() => import('../scenes/FactoryScene'));
@@ -37,17 +37,14 @@ export default function Hero() {
   const [stage, setStage] = useState(-1); // -1: intro text, 0..2: Build, Automate, Ship
   const [active, setActive] = useState(true);
   const [webgl] = useState(hasWebGL);
-  // the 3D scene starts after the loader, so it does not slow the loader's animation down
-  const [sceneOn, setSceneOn] = useState(false);
   const stages = t('hero.stages', { returnObjects: true });
 
+  // The scene loads and draws while the loader is still on screen, so the hero is
+  // already finished when the loader lifts. With no scene to wait for, release the
+  // loader right away. (FactoryScene reports its own first frames.)
   useEffect(() => {
-    let alive = true;
-    loaderDone.then(() => alive && setSceneOn(true));
-    return () => {
-      alive = false;
-    };
-  }, []);
+    if (!webgl) markSceneReady();
+  }, [webgl]);
 
   // measure the text blocks (they change with the language, fonts and screen size)
   useEffect(() => {
@@ -119,7 +116,7 @@ export default function Hero() {
   return (
     <section ref={sectionRef} className={`hero ${reduced ? 'hero--static' : ''}`} id="top" aria-labelledby="hero-name">
       <div ref={stageRef} className="hero__stage">
-        {webgl && sceneOn && (
+        {webgl && (
           <div className="hero__canvas">
             <Suspense fallback={null}>
               <FactoryScene progressRef={progressRef} layoutRef={layoutRef} reduced={reduced} active={active} />
@@ -132,6 +129,8 @@ export default function Hero() {
             <p className="hero__role">{t('hero.role')}</p>
             <FlapText as="h1" id="hero-name" className="hero__name" text={t('hero.name')} />
             <FlapText as="p" className="hero__tagline" text={t('hero.tagline')} />
+            {/* the one number that says what the automation is actually worth */}
+            <p className="hero__proof">{t('hero.proof')}</p>
             <div className="hero__actions">
               <a
                 className="btn btn--primary"

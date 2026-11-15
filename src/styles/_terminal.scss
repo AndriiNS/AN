@@ -92,3 +92,66 @@
     font-size: 13px;
   }
 }
+
+// ---------- The one-time nudge towards the terminal (TerminalHint.jsx) ----------
+.hint {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 120;
+  display: flex;
+  align-items: stretch;
+  border-radius: 999px;
+  background: var(--ink);
+  color: #e8eaf0;
+  box-shadow: 0 18px 40px -18px rgba(21, 23, 28, 0.7);
+  animation: hint-in 0.45s var(--ease) both;
+
+  button {
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    &:focus-visible {
+      outline: 2px solid var(--yellow);
+      outline-offset: 2px;
+      border-radius: 999px;
+    }
+  }
+
+  &__body {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 8px 12px 18px;
+    font-size: var(--fs-sm);
+    text-align: left;
+  }
+  &__key {
+    font-family: var(--font-mono);
+    color: var(--yellow);
+  }
+  &__close {
+    padding: 0 16px 0 10px;
+    font-size: 20px;
+    line-height: 1;
+    color: #8d94a3;
+    &:hover {
+      color: #e8eaf0;
+    }
+  }
+}
+
+@keyframes hint-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hint {
+    animation: none;
+  }
+}

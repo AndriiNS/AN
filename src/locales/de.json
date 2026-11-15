@@ -1,7 +1,9 @@
 {
   "meta": {
     "title": "Andrii Naumov, Webentwickler und Prozessautomatisierung in Hagen",
-    "description": "Andrii Naumov, Webentwickler in Hagen. Websites, Webanwendungen und Prozessautomatisierung: Integrationen, interne Tools und weniger manuelle Arbeit für Teams."
+    "description": "Andrii Naumov, Webentwickler in Hagen. Websites, Webanwendungen und Prozessautomatisierung: Integrationen, interne Tools und weniger manuelle Arbeit für Teams.",
+    "imprintDesc": "Impressum und Kontaktangaben von Andrii Naumov, Webentwickler und Prozessautomatisierung in Hagen.",
+    "privacyDesc": "Datenschutzerklärung dieser Website: keine Cookies, kein Tracking, keine externen Schriften. Verantwortlicher, Hosting und Ihre Rechte."
   },
   "nav": {
     "skip": "Zum Inhalt springen",
@@ -20,7 +22,6 @@
     "tagline": "Ich entwickle Websites und Webanwendungen und automatisiere die Prozesse drumherum, damit Teams weniger Zeit mit Routine verbringen.",
     "ctaProjects": "Projekte ansehen",
     "ctaCv": "Lebenslauf (PDF)",
-    "scrollHint": "Scrollen, um diese Seite zu zerlegen",
     "stagesLabel": "So arbeite ich",
     "stages": [
       {
@@ -35,7 +36,8 @@
         "name": "Ausliefern",
         "text": "So geht das Ergebnis schneller live: responsiv, stabil und mit weniger manuellen Fehlern."
       }
-    ]
+    ],
+    "proof": "Projektstart: von zwei Stunden auf unter 15 Minuten. Mein internes Tool, täglich von sechs Entwicklern genutzt."
   },
   "projects": {
     "title": "Ausgewählte Arbeiten",
@@ -44,18 +46,6 @@
     "code": "Code",
     "nda": "Internes Tool, Code unter NDA",
     "featured": [
-      {
-        "id": "parser",
-        "name": "Automatisierter Projektstart",
-        "year": "2026",
-        "summary": "Ein Python-Tool, das eine Website herunterlädt, Assets und Links lokalisiert und daraus ein sauberes Projekt für die Entwicklung macht.",
-        "detail": "Früher begann jedes neue Projekt mit stundenlangem manuellem Kopieren und Korrigieren von Dateien. Ich habe das Tool aus eigener Initiative entworfen und gebaut. Jetzt startet das Team in wenigen Minuten mit einem lauffähigen Projekt.",
-        "stack": [
-          "Python",
-          "Automatisierung",
-          "CLI"
-        ]
-      },
       {
         "id": "landings",
         "name": "Landingpages für eine Business School",
@@ -71,47 +61,31 @@
         ]
       }
     ],
-    "earlierTitle": "Frühere Projekte",
-    "earlier": [
-      {
-        "id": "midas",
-        "name": "MIDAS",
-        "summary": "Layout eines Onlineshops mit Produktkatalog und Warenkorb.",
-        "stack": [
-          "HTML",
-          "SCSS",
-          "JavaScript"
-        ]
-      },
-      {
-        "id": "agency",
-        "name": "Agency Creative",
-        "summary": "Landingpage für eine Kreativagentur mit GSAP-Animationen.",
-        "stack": [
-          "HTML",
-          "SCSS",
-          "JavaScript",
-          "GSAP"
-        ]
-      },
-      {
-        "id": "2rism",
-        "name": "2rism",
-        "summary": "Reise-Landingpage mit Scroll-Animationen.",
-        "stack": [
-          "HTML",
-          "SCSS",
-          "JavaScript",
-          "ScrollReveal"
-        ]
-      }
-    ],
     "workTitle": "In meinen Jobs",
     "roleTitle": "Meine Aufgaben",
     "caseStudy": "Case-Studie des Studios",
     "hosted": "Server in der Ukraine: aus dem Ausland lädt die Seite eventuell etwas langsamer.",
     "previewAlt": "Startseite von {{name}}",
     "cases": [
+      {
+        "id": "parser",
+        "name": "Automatisierter Projektstart",
+        "kind": "Internes Tool · Arbeit",
+        "summary": "Ein internes Web-Tool, das eine Website herunterlädt, ihre Assets und Links lokalisiert und daraus ein sauberes Projekt macht, mit dem das Team sofort weiterarbeiten kann. Aus eigener Initiative entworfen und gebaut.",
+        "role": [
+          "Download-Schicht mit zwei Engines: wget und ein echter Browser (Playwright) für Seiten mit 403 oder Bot-Prüfung",
+          "Lokalisierung aller Assets: Links werden zu relativen Pfaden, Analytics und Tracker fliegen raus, Formulare werden umgebogen",
+          "Oberfläche in React mit drei Modi: ganze Website, einzelne Seiten, Archiv bereinigen",
+          "Projektstart von rund zwei Stunden auf unter 15 Minuten, über 100 Projekte damit aufgesetzt, sechs Entwickler nutzen es täglich"
+        ],
+        "stack": [
+          "Python",
+          "Node.js",
+          "React",
+          "Playwright",
+          "BeautifulSoup"
+        ]
+      },
       {
         "id": "christmas",
         "name": "Christmas Tree",
@@ -160,11 +134,12 @@
           "SCSS"
         ]
       }
-    ]
+    ],
+    "shot": "Screenshot {{n}}"
   },
   "journey": {
     "title": "Chmelnyzkyj → Kyjiw → Hagen",
-    "intro": "Drei Städte, vier Jahre, drei Jobs und nebenbei Freelance-Projekte.",
+    "intro": "Drei Städte, vier Jahre, zwei Jobs und nebenbei Freelance-Projekte.",
     "cities": {
       "khmelnytskyi": "Chmelnyzkyj",
       "kyiv": "Kyjiw",
@@ -184,14 +159,8 @@
         "text": "Landingpages für Marketingkampagnen, Zahlungsanbieter, API-Integrationen, Performance und SEO."
       },
       {
-        "date": "02.2025 – 11.2025",
-        "title": "Markup-Entwickler",
-        "place": "Unternehmen unter NDA, remote",
-        "text": "Webanwendungen und Landingpages, wiederverwendbare Templates, Analytics- und API-Integrationen, enge Zusammenarbeit mit Design und Marketing."
-      },
-      {
         "date": "01.2026 – heute",
-        "title": "Middle Web Developer",
+        "title": "Webentwickler (Middle)",
         "place": "Unternehmen unter NDA, hybrid",
         "text": "Interne Tools und Automatisierung, ein Website-Parser in Python, technische Recherche und Zahlungsintegrationen."
       },
@@ -211,7 +180,7 @@
       "backend": "Backend und Daten",
       "cms": "CMS",
       "motion": "Animation und 3D",
-      "tools": "Tools"
+      "tools": "Automatisierung und Tools"
     },
     "languagesTitle": "Sprachen",
     "languages": [
@@ -271,7 +240,8 @@
     "cv": "Lebenslauf herunterladen (PDF)",
     "copy": "E-Mail kopieren",
     "copied": "Kopiert",
-    "localTime": "Ortszeit in Hagen"
+    "localTime": "Ortszeit in Hagen",
+    "status": "Offen für eine Festanstellung als Frontend- oder Full-Stack-Entwickler. Aufenthaltserlaubnis nach § 24 AufenthG, uneingeschränkte Arbeitserlaubnis. Hagen und das Ruhrgebiet, Umzug möglich im Umkreis von Bochum (Dortmund, Essen, Herne)."
   },
   "footer": {
     "imprint": "Impressum",
@@ -292,7 +262,8 @@
     "gotoUnknown": "Bereiche: projects, journey, skills, contact",
     "cvStarted": "Lebenslauf wird heruntergeladen…",
     "hire": "Zugriff gewährt. Ihr Mailprogramm wird geöffnet…",
-    "sudo": "Netter Versuch. Probieren Sie: sudo hire-me"
+    "sudo": "Netter Versuch. Probieren Sie: sudo hire-me",
+    "hintClose": "Hinweis schließen"
   },
   "imprint": {
     "title": "Impressum",

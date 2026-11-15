@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FlapText from './FlapText';
-import { CONTACT, CV } from '../data/site';
+import { CONTACT, CV, IMPRINT } from '../data/site';
 
 const LOCALES = { en: 'en-GB', de: 'de-DE', uk: 'uk-UA' };
 
@@ -54,6 +54,11 @@ export default function Contact() {
         </div>
 
         <p className="contact__text">{t('contact.text')}</p>
+        {/* what a German recruiter checks first: role, work permit, where I can work */}
+        <p className="contact__status">
+          <span className="contact__status-dot" aria-hidden="true" />
+          {t('contact.status')}
+        </p>
 
         <div className="contact__mail">
           <a className="contact__email" href={`mailto:${CONTACT.email}`}>
@@ -70,6 +75,13 @@ export default function Contact() {
           <a className="btn btn--yellow" href={`${import.meta.env.BASE_URL}${CV[i18n.language]}`} download>
             {t('contact.cv')}
           </a>
+          {/* German recruiters often just call: the number appears as soon as it is
+              filled in in data/site.js (it is also needed for the Impressum) */}
+          {IMPRINT.phone && (
+            <a className="btn btn--light" href={`tel:${IMPRINT.phone.replace(/\s/g, '')}`}>
+              {IMPRINT.phone}
+            </a>
+          )}
           <a className="btn btn--light" href={CONTACT.linkedin} target="_blank" rel="noreferrer">
             LinkedIn
           </a>

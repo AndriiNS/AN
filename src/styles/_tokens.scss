@@ -1,5 +1,31 @@
 // Design tokens. Light "workshop" look: cool paper, ink, one strong blue
 // and a yellow used only for highlights (progress, markers, selection).
+
+// ---------- Fallback faces with the real fonts' metrics ----------
+// Until Wix Madefor arrives, text is drawn in the system sans. Its letters are a
+// different width and its line boxes a different height, so the page used to jump
+// when the real font swapped in (0.13 CLS on the hero alone). These two faces are the
+// system font re-measured to match Madefor: same average letter width (size-adjust),
+// same ascent and descent. The swap is then invisible.
+// Numbers from the fonts themselves: Madefor ascent 100.8 %, descent 25.2 %, no line
+// gap, average width 636/1000 (Display 800) and 555/1000 (Text 400); Arial 562/1000.
+@font-face {
+  font-family: 'Madefor Display Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans'), local('Roboto'), local('DejaVu Sans');
+  size-adjust: 113%;
+  ascent-override: 89.2%;
+  descent-override: 22.3%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Madefor Text Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica'), local('Liberation Sans'), local('Roboto'), local('DejaVu Sans');
+  size-adjust: 99%;
+  ascent-override: 101.8%;
+  descent-override: 25.5%;
+  line-gap-override: 0%;
+}
+
 :root {
   color-scheme: light;
   --paper: #eef0f3;
@@ -12,8 +38,8 @@
   --yellow: #ffcc33;
   --cursor: #f5b700; // the logo cursor: a bit deeper yellow, so it holds up on the light paper
 
-  --font-display: 'Wix Madefor Display', system-ui, sans-serif;
-  --font-body: 'Wix Madefor Text', system-ui, sans-serif;
+  --font-display: 'Wix Madefor Display', 'Madefor Display Fallback', system-ui, sans-serif;
+  --font-body: 'Wix Madefor Text', 'Madefor Text Fallback', system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
   // type scale (perfect fourth)

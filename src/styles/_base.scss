@@ -7,6 +7,11 @@
 html {
   -webkit-text-size-adjust: 100%;
   scroll-padding-top: var(--header-h);
+  // Keep the scrollbar's space reserved from the very first paint. Without it the page
+  // is briefly short enough to need no scrollbar, then gets one, the content loses
+  // ~15 px of width and every line of text re-wraps: a visible jump (0.13 CLS).
+  // It also keeps the page still while the loader and the curtain hide the scrollbar.
+  scrollbar-gutter: stable;
 }
 
 // Lenis smooth scroll
@@ -240,11 +245,12 @@ body.is-switching main h3 {
     transform-origin: 50% 100%;
     animation: grow-cursor calc(0.95s * var(--t)) ease-out calc(0.75s * var(--t)) both;
   }
-  // while the page is still loading, the stem blinks like a text cursor
+  // while the page is still loading, the yellow stem keeps pulsing: a soft breath
+  // rather than a hard caret blink, because the wait can last a few seconds
   &.is-waiting &__cursor {
     animation:
       grow-cursor calc(0.95s * var(--t)) ease-out calc(0.75s * var(--t)) both,
-      caret-blink 1s steps(1) calc(2.2s * var(--t)) infinite;
+      stem-pulse calc(1.4s * var(--t)) ease-in-out calc(1.7s * var(--t)) infinite;
   }
 
   &--on-dark {
@@ -269,6 +275,13 @@ body.is-switching main h3 {
   }
   to {
     transform: none;
+  }
+}
+// the waiting pulse of the yellow stem: opacity and a touch of height, both composited
+@keyframes stem-pulse {
+  50% {
+    opacity: 0.35;
+    transform: scaleY(0.94);
   }
 }
 @keyframes grow-cursor {
@@ -331,6 +344,28 @@ html.is-locked {
   .logo:hover .logo-mark__cursor,
   .logo:focus-visible .logo-mark__cursor {
     animation: none;
+  }
+}
+
+// ---------- Touch screens ----------
+// A finger is about 9 mm wide, so small text links need a bigger box around them.
+// Only the clickable area grows; the text keeps its size and position.
+@media (pointer: coarse) {
+  .project__links a,
+  .site-footer__legal a,
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .logo {
+    min-width: 44px;
+  }
+  // the address is one line of small type on a phone; the hover underline never
+  // shows on a touch screen, so the extra padding costs nothing
+  .contact__email {
+    display: inline-block;
+    padding-block: 11px;
   }
 }
 

@@ -12,3 +12,19 @@
 # files with a hash in the name never change: cache them for a year
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
+
+# screenshots, icons and the CV: a day in the browser, longer on Cloudflare's edge
+/projects/*
+  Cache-Control: public, max-age=86400, s-maxage=604800
+/cv/*
+  Cache-Control: public, max-age=3600, s-maxage=86400
+
+# the HTML itself must always be checked, so a new deploy is visible right away
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/en
+  Cache-Control: public, max-age=0, must-revalidate
+/uk
+  Cache-Control: public, max-age=0, must-revalidate

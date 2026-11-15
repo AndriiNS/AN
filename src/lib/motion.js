@@ -28,13 +28,24 @@ let lenis = null;
 export const getLenis = () => lenis;
 
 //* -- Loader finished --
-// Heavy work (starting the 3D scene) waits until the loader is gone, so it does not
-// compete with the loader's animation. Resolved by Loader.jsx, also when it is skipped.
+// Resolved by Loader.jsx when the mark has flown into the header, also when the loader
+// is skipped (reduced motion, or it already played in this tab).
 let resolveLoader;
 export const loaderDone = new Promise((resolve) => {
   resolveLoader = resolve;
 });
 export const markLoaderDone = () => resolveLoader();
+
+//* -- The 3D scene has drawn its first frame --
+// The hero scene starts loading straight away, behind the loader. The loader keeps the
+// mark on screen (the yellow stem pulsing) until this resolves, so the visitor never
+// sees an empty hero that fills in a second later. Resolved by FactoryScene.jsx after
+// its first frames, or by Hero.jsx when there is no scene to wait for.
+let resolveScene;
+export const sceneReady = new Promise((resolve) => {
+  resolveScene = resolve;
+});
+export const markSceneReady = () => resolveScene();
 
 //* -- Interaction lock --
 // While the loader or the page curtain is on screen, the visitor can't scroll,

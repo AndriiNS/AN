@@ -3,10 +3,14 @@
 import { LEGAL } from '../pages/legal/content';
 
 const LEGAL_KIND = { impressum: 'imprint', datenschutz: 'privacy' };
+const LEGAL_DESC = { imprint: 'meta.imprintDesc', privacy: 'meta.privacyDesc' };
 
 // t: i18next t() for the page language
 export function pageMeta(t, lang, page) {
   const kind = LEGAL_KIND[page];
-  const title = kind ? `${(LEGAL[lang] || LEGAL.en)[kind].title} · Andrii Naumov` : t('meta.title');
-  return { title, description: t('meta.description') };
+  if (!kind) return { title: t('meta.title'), description: t('meta.description') };
+  return {
+    title: `${(LEGAL[lang] || LEGAL.en)[kind].title} · Andrii Naumov`,
+    description: t(LEGAL_DESC[kind]),
+  };
 }

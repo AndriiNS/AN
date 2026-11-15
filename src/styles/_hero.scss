@@ -77,16 +77,30 @@
 
   &__tagline {
     margin-top: 28px;
-    max-width: 42ch;
+    // 21em is the same measure as the 42ch this used to be, but in a unit that does not
+    // depend on the font: with `ch` the line length changed the moment the web font
+    // replaced the fallback, and the whole hero re-wrapped in front of the visitor.
+    max-width: 21em;
     font-size: var(--fs-md);
     line-height: 1.4;
+  }
+
+  // the result line: marked like a highlighted passage, so the eye stops at it
+  &__proof {
+    margin-top: 20px;
+    max-width: 24em;
+    padding-left: 14px;
+    border-left: 3px solid var(--yellow);
+    font-size: var(--fs-sm);
+    line-height: 1.45;
+    color: var(--muted);
   }
 
   &__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 36px;
+    margin-top: 28px;
   }
 
   &__captions {

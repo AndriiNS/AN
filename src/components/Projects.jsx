@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FlapText from './FlapText';
 import Inspectable from './Inspectable';
@@ -6,6 +7,7 @@ import { CASES, PROJECT_LINKS } from '../data/site';
 const BASE = import.meta.env.BASE_URL;
 // the preview box is 16:10; on hover the screenshot scrolls to its bottom edge
 const BOX_RATIO = 10 / 16;
+const panFor = (ratio) => `${-(1 - BOX_RATIO / ratio) * 100}%`;
 
 function Links({ id }) {
   const { t } = useTranslation();
@@ -37,38 +39,80 @@ function Stack({ items }) {
   );
 }
 
-// a client website: a browser window with a real screenshot, and the story next to it
+// The screenshot inside a browser window. One shot per case, except the internal tool,
+// which has three: the thumbnails below the window switch between them.
+function Screens({ item, data }) {
+  const { t } = useTranslation();
+  const shots = data.shots || [data.ratio];
+  const [shot, setShot] = useState(0);
+  const file = (i, small) => `${BASE}projects/${item.id}${shots.length > 1 ? `-${i + 1}` : ''}${small ? '-620' : ''}.webp`;
+
+  const frame = (
+    <>
+      <span className="case__bar" aria-hidden="true">
+        <span className="case__dots">
+          <i />
+          <i />
+          <i />
+        </span>
+        <span className="case__url">{data.url ? new URL(data.url).host : data.host}</span>
+      </span>
+      <span className="case__screen">
+        <img
+          key={shot}
+          src={file(shot)}
+          srcSet={`${file(shot, true)} 620w, ${file(shot)} 1240w`}
+          sizes="(max-width: 860px) 100vw, 55vw"
+          width="1240"
+          height={Math.round(1240 * shots[shot])}
+          alt={t('projects.previewAlt', { name: item.name })}
+          loading="lazy"
+          decoding="async"
+          style={{ '--pan': panFor(shots[shot]) }}
+        />
+      </span>
+    </>
+  );
+
+  return (
+    <div className="case__media">
+      {data.url ? (
+        <a className="case__preview" href={data.url} target="_blank" rel="noreferrer" aria-label={`${item.name}: ${new URL(data.url).host}`}>
+          {frame}
+        </a>
+      ) : (
+        <div className="case__preview case__preview--static">{frame}</div>
+      )}
+
+      {shots.length > 1 && (
+        <div className="case__shots">
+          {shots.map((ratio, i) => (
+            <button
+              key={i}
+              type="button"
+              className={`case__shot ${i === shot ? 'is-active' : ''}`}
+              aria-label={t('projects.shot', { n: i + 1 })}
+              aria-pressed={i === shot}
+              onClick={() => setShot(i)}
+              onMouseEnter={() => setShot(i)}
+            >
+              <img src={file(i, true)} alt="" width="620" height={Math.round(620 * ratio)} loading="lazy" decoding="async" />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// a piece of work: the screenshot on one side, the story on the other
 function Case({ item }) {
   const { t } = useTranslation();
   const data = CASES[item.id];
-  const host = new URL(data.url).host;
-  const pan = `${-(1 - BOX_RATIO / data.ratio) * 100}%`;
 
   return (
     <article className="case" id={item.id}>
-      <a className="case__preview" href={data.url} target="_blank" rel="noreferrer" aria-label={`${item.name}: ${host}`}>
-        <span className="case__bar" aria-hidden="true">
-          <span className="case__dots">
-            <i />
-            <i />
-            <i />
-          </span>
-          <span className="case__url">{host}</span>
-        </span>
-        <span className="case__screen">
-          <img
-            src={`${BASE}projects/${item.id}.webp`}
-            srcSet={`${BASE}projects/${item.id}-620.webp 620w, ${BASE}projects/${item.id}.webp 1240w`}
-            sizes="(max-width: 860px) 100vw, 55vw"
-            width="1240"
-            height={Math.round(1240 * data.ratio)}
-            alt={t('projects.previewAlt', { name: item.name })}
-            loading="lazy"
-            decoding="async"
-            style={{ '--pan': pan }}
-          />
-        </span>
-      </a>
+      <Screens item={item} data={data} />
 
       <div className="case__body">
         <p className="case__kind">{item.kind}</p>
@@ -81,18 +125,23 @@ function Case({ item }) {
           ))}
         </ul>
         <Stack items={item.stack} />
-        <p className="project__links">
-          <a href={data.url} target="_blank" rel="noreferrer">
-            {t('projects.live')}
-            <span aria-hidden="true"> ↗</span>
-          </a>
-          {data.caseUrl && (
-            <a href={data.caseUrl} target="_blank" rel="noreferrer">
-              {t('projects.caseStudy')}
-              <span aria-hidden="true"> ↗</span>
-            </a>
-          )}
-        </p>
+        {(data.url || data.caseUrl) && (
+          <p className="project__links">
+            {data.url && (
+              <a href={data.url} target="_blank" rel="noreferrer">
+                {t('projects.live')}
+                <span aria-hidden="true"> ↗</span>
+              </a>
+            )}
+            {data.caseUrl && (
+              <a href={data.caseUrl} target="_blank" rel="noreferrer">
+                {t('projects.caseStudy')}
+                <span aria-hidden="true"> ↗</span>
+              </a>
+            )}
+          </p>
+        )}
+        {data.nda && <p className="case__hosted">{t('projects.nda')}</p>}
         {data.ua && <p className="case__hosted">{t('projects.hosted')}</p>}
       </div>
     </article>
@@ -103,7 +152,6 @@ export default function Projects() {
   const { t } = useTranslation();
   const cases = t('projects.cases', { returnObjects: true });
   const featured = t('projects.featured', { returnObjects: true });
-  const earlier = t('projects.earlier', { returnObjects: true });
 
   return (
     <section className="section" id="projects" aria-labelledby="projects-title">
@@ -130,24 +178,11 @@ export default function Projects() {
               <h3 className="project__name">{p.name}</h3>
               <p className="project__summary">{p.summary}</p>
               <p className="project__detail">{p.detail}</p>
-              {p.id === 'parser' && <p className="project__note">{t('projects.nda')}</p>}
               <Links id={p.id} />
             </div>
           </Inspectable>
         ))}
       </div>
-
-      <h3 className="earlier__title">{t('projects.earlierTitle')}</h3>
-      <ul className="earlier">
-        {earlier.map((p) => (
-          <Inspectable as="li" key={p.id} selector={`li.project`} className="project project--small">
-            <h4 className="project__name">{p.name}</h4>
-            <p className="project__summary">{p.summary}</p>
-            <Stack items={p.stack} />
-            <Links id={p.id} />
-          </Inspectable>
-        ))}
-      </ul>
     </section>
   );
 }

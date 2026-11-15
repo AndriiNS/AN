@@ -10,6 +10,7 @@ import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, Html, Lightformer, OrthographicCamera, RoundedBox } from '@react-three/drei';
+import { markSceneReady } from '../lib/motion';
 
 //* -- Palette (matches src/styles/_tokens.scss) --
 const C = {
@@ -480,10 +481,24 @@ function CameraRig({ progressRef, layoutRef, reduced }) {
   return <OrthographicCamera ref={camRef} makeDefault near={0.1} far={200} position={[40, 38, 40]} zoom={20} />;
 }
 
+// Tells the loader that the scene is really on screen. The first frame still compiles
+// shaders and bakes the environment map, so we wait for a few frames and only then
+// let the loader fly away: by that time the factory is fully drawn underneath it.
+const READY_FRAMES = 3;
+function FirstFrame() {
+  const frames = useRef(0);
+  useFrame(() => {
+    frames.current += 1;
+    if (frames.current === READY_FRAMES) markSceneReady();
+  });
+  return null;
+}
+
 //* -- The whole scene --
 function Factory({ progressRef, layoutRef, reduced }) {
   return (
     <>
+      <FirstFrame />
       <CameraRig progressRef={progressRef} layoutRef={layoutRef} reduced={reduced} />
       <Floor />
       <Belt />

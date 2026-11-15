@@ -1,7 +1,9 @@
 {
   "meta": {
     "title": "Andrii Naumov, web developer and process automation in Hagen",
-    "description": "Andrii Naumov, web developer in Hagen. Websites, web apps and process automation: integrations, internal tools and less manual work for teams."
+    "description": "Andrii Naumov, web developer in Hagen. Websites, web apps and process automation: integrations, internal tools and less manual work for teams.",
+    "imprintDesc": "Imprint and contact details of Andrii Naumov, web developer and process automation in Hagen, Germany.",
+    "privacyDesc": "Privacy policy of this website: no cookies, no tracking, no external fonts. Controller, hosting and your rights."
   },
   "nav": {
     "skip": "Skip to content",
@@ -20,7 +22,6 @@
     "tagline": "I build websites and web apps and automate the processes around them, so teams spend less time on routine work.",
     "ctaProjects": "See projects",
     "ctaCv": "Download CV",
-    "scrollHint": "Scroll to take this page apart",
     "stagesLabel": "How I work",
     "stages": [
       {
@@ -35,7 +36,8 @@
         "name": "Ship",
         "text": "The result goes live faster: responsive, stable and with fewer manual mistakes."
       }
-    ]
+    ],
+    "proof": "Project setup: from two hours to under 15 minutes. An internal tool I built, used daily by six developers."
   },
   "projects": {
     "title": "Selected work",
@@ -44,18 +46,6 @@
     "code": "Code",
     "nda": "Internal tool, code under NDA",
     "featured": [
-      {
-        "id": "parser",
-        "name": "Project setup automation",
-        "year": "2026",
-        "summary": "A Python tool that downloads a website, localizes its assets and links, and turns it into a clean project ready for development.",
-        "detail": "Every new project used to start with hours of copying and fixing files by hand. I designed and built this tool on my own initiative, and now the team starts from a working project in minutes.",
-        "stack": [
-          "Python",
-          "Automation",
-          "CLI"
-        ]
-      },
       {
         "id": "landings",
         "name": "Landing pages for a business school",
@@ -71,47 +61,31 @@
         ]
       }
     ],
-    "earlierTitle": "Earlier projects",
-    "earlier": [
-      {
-        "id": "midas",
-        "name": "MIDAS",
-        "summary": "Online store layout with a product catalog and cart.",
-        "stack": [
-          "HTML",
-          "SCSS",
-          "JavaScript"
-        ]
-      },
-      {
-        "id": "agency",
-        "name": "Agency Creative",
-        "summary": "Landing page for a creative agency with GSAP animations.",
-        "stack": [
-          "HTML",
-          "SCSS",
-          "JavaScript",
-          "GSAP"
-        ]
-      },
-      {
-        "id": "2rism",
-        "name": "2rism",
-        "summary": "Travel landing page with scroll animations.",
-        "stack": [
-          "HTML",
-          "SCSS",
-          "JavaScript",
-          "ScrollReveal"
-        ]
-      }
-    ],
     "workTitle": "At my jobs",
     "roleTitle": "What I did",
     "caseStudy": "Studio case study",
     "hosted": "Hosted in Ukraine: from abroad the site may load a little slower.",
     "previewAlt": "Home page of {{name}}",
     "cases": [
+      {
+        "id": "parser",
+        "name": "Project setup automation",
+        "kind": "Internal tool · At work",
+        "summary": "An internal web tool that downloads a website, localises its assets and links and turns it into a clean project the team can start working in right away. Designed and built on my own initiative.",
+        "role": [
+          "Download layer with two engines: wget, and a real browser (Playwright) for pages behind a 403 or a bot check",
+          "Asset localisation: links are rewritten to relative paths, analytics and trackers are stripped, forms are redirected",
+          "React interface with three modes: whole website, selected pages, clean up an archive",
+          "Project setup from about two hours to under 15 minutes, 100+ projects set up with it, used daily by six developers"
+        ],
+        "stack": [
+          "Python",
+          "Node.js",
+          "React",
+          "Playwright",
+          "BeautifulSoup"
+        ]
+      },
       {
         "id": "christmas",
         "name": "Christmas Tree",
@@ -160,11 +134,12 @@
           "SCSS"
         ]
       }
-    ]
+    ],
+    "shot": "Screenshot {{n}}"
   },
   "journey": {
     "title": "Khmelnytskyi → Kyiv → Hagen",
-    "intro": "Three cities, four years, three jobs and freelance projects alongside.",
+    "intro": "Three cities, four years, two jobs and freelance projects alongside.",
     "cities": {
       "khmelnytskyi": "Khmelnytskyi",
       "kyiv": "Kyiv",
@@ -182,12 +157,6 @@
         "title": "HTML Developer",
         "place": "Alex Yanovsky Higher School of Management, remote",
         "text": "Landing pages for marketing campaigns, payment gateways, API integrations, performance and SEO."
-      },
-      {
-        "date": "02.2025 – 11.2025",
-        "title": "Markup Developer",
-        "place": "Company under NDA, remote",
-        "text": "Web applications and landing pages, reusable templates, analytics and API integrations, close work with designers and marketers."
       },
       {
         "date": "01.2026 – now",
@@ -211,7 +180,7 @@
       "backend": "Back-end and data",
       "cms": "CMS",
       "motion": "Animation and 3D",
-      "tools": "Tools"
+      "tools": "Automation and tools"
     },
     "languagesTitle": "Languages I speak",
     "languages": [
@@ -271,7 +240,8 @@
     "cv": "Download CV (PDF)",
     "copy": "Copy email",
     "copied": "Copied",
-    "localTime": "Local time in Hagen"
+    "localTime": "Local time in Hagen",
+    "status": "Open to a permanent position as a frontend or full-stack developer. Residence permit under § 24 AufenthG, unrestricted work permit. Hagen and the Ruhr area, happy to relocate within reach of Bochum (Dortmund, Essen, Herne)."
   },
   "footer": {
     "imprint": "Imprint",
@@ -292,7 +262,8 @@
     "gotoUnknown": "Sections: projects, journey, skills, contact",
     "cvStarted": "Downloading CV…",
     "hire": "Permission granted. Opening your mail app…",
-    "sudo": "Nice try. Try: sudo hire-me"
+    "sudo": "Nice try. Try: sudo hire-me",
+    "hintClose": "Dismiss hint"
   },
   "imprint": {
     "title": "Imprint",

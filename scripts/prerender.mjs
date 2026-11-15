@@ -9,11 +9,26 @@
 //
 // Cloudflare (see wrangler.jsonc) serves dist/en.html at /en, without ".html".
 // Also written: 404.html, robots.txt and, once SITE_URL is known, sitemap.xml.
-import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { createServer } from 'vite';
 
 const DIST = resolve('dist');
+const ASSETS = readdirSync(resolve(DIST, 'assets'));
+const asset = (re) => ASSETS.find((f) => re.test(f));
+
+// The 3D hero is a separate chunk. Without this hint the browser only learns about it
+// when React mounts the hero; with it, it downloads in parallel with the main bundle,
+// which is exactly the wait the loader is showing.
+const SCENE_CHUNK = asset(/^FactoryScene-.*\.js$/);
+
+// The two fonts the first screen actually paints with: the display 800 (the big name)
+// and the text 400 (everything else). Cyrillic for Ukrainian, Latin for German and English.
+const fontsFor = (lang) =>
+  [
+    asset(new RegExp(`^wix-madefor-display-${lang === 'uk' ? 'cyrillic' : 'latin'}-800-normal-.*\\.woff2$`)),
+    asset(new RegExp(`^wix-madefor-text-${lang === 'uk' ? 'cyrillic' : 'latin'}-400-normal-.*\\.woff2$`)),
+  ].filter(Boolean);
 
 // load the app's own modules (with their extension-less imports) through Vite
 const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error' });
@@ -34,10 +49,53 @@ const fileFor = (path) => (path === '/' ? 'index.html' : `${path.slice(1)}.html`
 
 const template = readFileSync(resolve(DIST, 'index.html'), 'utf8');
 
+// What a visitor without JavaScript sees instead of an empty page: the same facts as the
+// first screen, plus a way to reach me. Search engines run JavaScript and see the real page.
+function fallback(lang, page, description) {
+  const t = tFor(lang);
+  if (page) return `<main><h1>${escape(t('meta.title'))}</h1><p>${escape(description)}</p></main>`;
+  const links = [
+    `<a href="mailto:${IMPRINT.email}">${IMPRINT.email}</a>`,
+    `<a href="https://www.linkedin.com/in/andrii-naumov-a09540283">LinkedIn</a>`,
+    `<a href="https://github.com/AndriiNS">GitHub</a>`,
+  ].join(' · ');
+  return [
+    '<main style="max-width:48rem;margin:0 auto;padding:48px 24px;font-family:system-ui,sans-serif;line-height:1.5">',
+    `<p>${escape(t('hero.role'))}</p>`,
+    `<h1>${escape(t('hero.name'))}</h1>`,
+    `<p>${escape(t('hero.tagline'))}</p>`,
+    `<h2>${escape(t('about.title'))}</h2><p>${escape(t('about.text'))}</p>`,
+    `<h2>${escape(t('contact.title'))}</h2><p>${links}</p>`,
+    `<p><a href="${pathFor(lang, 'impressum')}">${escape(t('footer.imprint'))}</a> · <a href="${pathFor(lang, 'datenschutz')}">${escape(t('footer.privacy'))}</a></p>`,
+    '</main>',
+  ].join('');
+}
+
+// Who the site is about, in the form search engines read directly (schema.org/Person).
+function personJsonLd(lang) {
+  const t = tFor(lang);
+  const person = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Andrii Naumov',
+    jobTitle: t('hero.role'),
+    description: t('meta.description'),
+    email: `mailto:${IMPRINT.email}`,
+    address: { '@type': 'PostalAddress', addressLocality: 'Hagen', addressCountry: 'DE' },
+    knowsLanguage: ['uk', 'en', 'de'],
+    sameAs: ['https://www.linkedin.com/in/andrii-naumov-a09540283', 'https://github.com/AndriiNS'],
+    ...(SITE_URL ? { url: SITE_URL + pathFor(lang) } : {}),
+  };
+  // "</" inside a <script> would end the tag early
+  return `<script type="application/ld+json">${JSON.stringify(person).replace(/</g, '\\u003c')}</script>`;
+}
+
 function render(lang, page, { noindex = false } = {}) {
   const { title, description } = pageMeta(tFor(lang), lang, page);
   const path = pathFor(lang, page);
   const head = [
+    ...(SCENE_CHUNK && !page ? [`<link rel="modulepreload" href="/assets/${SCENE_CHUNK}" />`] : []),
+    ...fontsFor(lang).map((f) => `<link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/${f}" />`),
     `<title>${escape(title)}</title>`,
     `<meta name="description" content="${escape(description)}" />`,
     `<meta property="og:type" content="website" />`,
@@ -48,6 +106,7 @@ function render(lang, page, { noindex = false } = {}) {
     `<meta name="twitter:card" content="summary_large_image" />`,
   ];
   if (noindex) head.push('<meta name="robots" content="noindex" />');
+  if (!noindex) head.push(personJsonLd(lang));
   // these need a full address, so they appear once SITE_URL is set
   if (SITE_URL && !noindex) {
     head.push(
@@ -68,10 +127,7 @@ function render(lang, page, { noindex = false } = {}) {
     .replace(/\n\s*<title>[\s\S]*?<\/title>/, '')
     .replace(/\n\s*<meta\s+name="description"[\s\S]*?\/>/, '')
     .replace(/\n\s*<\/head>/, `\n    ${head.join('\n    ')}\n  </head>`)
-    .replace(
-      '<div id="root"></div>',
-      `<div id="root"></div>\n    <noscript><p style="padding:24px;font-family:sans-serif">${escape(description)}</p></noscript>`,
-    );
+    .replace('<div id="root"></div>', `<div id="root"></div>\n    <noscript>${fallback(lang, page, description)}</noscript>`);
 }
 
 const written = [];

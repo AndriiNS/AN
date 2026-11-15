@@ -8,6 +8,7 @@ import Skills from '../components/Skills';
 import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import Terminal from '../components/Terminal';
+import TerminalHint from '../components/TerminalHint';
 import Loader from '../components/Loader';
 import { useSmoothScroll } from '../lib/motion';
 import { isTerminalKey } from '../components/Terminal';
@@ -45,6 +46,7 @@ export default function Home() {
       </main>
       <Footer />
       <Terminal open={terminal} onClose={() => setTerminal(false)} />
+      {!terminal && <TerminalHint onOpen={() => setTerminal(true)} />}
     </>
   );
 }

@@ -34,9 +34,7 @@
 // ---------- Inspect highlight (DevTools style) ----------
 .inspectable {
   position: relative;
-  transition:
-    background-color 0.15s,
-    box-shadow 0.15s;
+  transition: background-color 0.15s, box-shadow 0.15s;
 
   // DevTools colors: blue tint for content, yellow for the margin around it
   &.is-inspected {
@@ -61,9 +59,7 @@
     white-space: nowrap;
     opacity: 0;
     transform: translateY(4px);
-    transition:
-      opacity 0.15s,
-      transform 0.15s;
+    transition: opacity 0.15s, transform 0.15s;
     pointer-events: none;
     z-index: 5;
   }
@@ -96,8 +92,49 @@
   &:nth-child(even) {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
   }
-  &:nth-child(even) .case__preview {
+  &:nth-child(even) .case__media {
     order: 2;
+  }
+
+  // window plus, where there is more than one screenshot, the thumbnails under it
+  &__media {
+    display: grid;
+    gap: 14px;
+    min-width: 0;
+  }
+
+  &__shots {
+    display: flex;
+    gap: 10px;
+  }
+  &__shot {
+    flex: 1;
+    min-width: 0;
+    padding: 0;
+    border: 1.5px solid transparent;
+    border-radius: 10px;
+    background: var(--surface);
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.55;
+    transition:
+      opacity 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+    img {
+      display: block;
+      width: 100%;
+      // the three shots are different heights: crop them all to the same strip,
+      // taken from the middle, where each screen shows something different
+      height: 84px;
+      object-fit: cover;
+      object-position: center;
+    }
+    &:hover,
+    &:focus-visible,
+    &.is-active {
+      opacity: 1;
+      border-color: var(--blue);
+    }
   }
 
   &__preview {
@@ -160,6 +197,15 @@
     text-overflow: ellipsis;
   }
 
+  // the internal tool has no public address, so its window does not lift or link anywhere
+  &__preview--static:hover,
+  &__preview--static:focus-visible {
+    transform: none;
+    box-shadow:
+      0 1px 0 var(--line),
+      0 30px 60px -32px rgba(21, 23, 28, 0.45);
+  }
+
   // the screenshot is taller than the window: hovering scrolls it slowly down the page
   &__screen {
     display: block;
@@ -169,7 +215,7 @@
       display: block;
       width: 100%;
       height: auto;
-      transition: transform 1s cubic-bezier(0.45, 0, 0.55, 1);
+      transition: transform 5s cubic-bezier(0.45, 0, 0.55, 1);
     }
   }
   &__preview:hover img,
@@ -209,7 +255,7 @@
       position: relative;
       padding-left: 22px;
       &::before {
-        content: "";
+        content: '';
         position: absolute;
         left: 2px;
         top: 0.62em;
@@ -233,7 +279,7 @@
     grid-template-columns: 1fr;
   }
   .case {
-    &:nth-child(even) .case__preview {
+    &:nth-child(even) .case__media {
       order: 0;
     }
   }
@@ -387,9 +433,7 @@
 .computed {
   border-radius: 18px;
   background: var(--surface);
-  box-shadow:
-    0 1px 0 var(--line),
-    0 24px 48px -28px rgba(21, 23, 28, 0.35);
+  box-shadow: 0 1px 0 var(--line), 0 24px 48px -28px rgba(21, 23, 28, 0.35);
   overflow: visible;
 
   &__tabs {
@@ -454,9 +498,7 @@
   padding: clamp(16px, 3vw, 32px);
   border-radius: 24px;
   background: #dfe3ea;
-  box-shadow:
-    inset 0 2px 0 rgba(255, 255, 255, 0.7),
-    0 1px 0 var(--line);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.7), 0 1px 0 var(--line);
 
   &__row {
     display: grid;
@@ -491,9 +533,7 @@
   font-family: var(--font-display);
   font-weight: 700;
   text-align: center;
-  transition:
-    transform 0.09s ease-out,
-    box-shadow 0.09s ease-out;
+  transition: transform 0.09s ease-out, box-shadow 0.09s ease-out;
   cursor: default;
 
   &:hover {
@@ -653,6 +693,26 @@
   color: #c3c8d2;
   font-size: var(--fs-md);
   line-height: 1.45;
+}
+
+// availability: a quiet line with a small green light in front of it
+.contact__status {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+  max-width: 68ch;
+  color: #9aa2b1;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+}
+.contact__status-dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-top: 0.45em;
+  border-radius: 50%;
+  background: #35c26a;
+  box-shadow: 0 0 0 4px rgba(53, 194, 106, 0.18);
 }
 
 .contact__mail {

@@ -1,6 +1,6 @@
 // First-visit loader "Growth":
 //   1. the strokes of the AN mark grow up from the baseline, the yellow stem last
-//   2. while the page is still loading, the stem blinks like a text cursor
+//   2. while the page is still loading, the yellow stem pulses
 //   3. when the page is ready, the mark gives a small spring, flies into the header
 //      and the backdrop fades away
 // Every movement is a CSS or Web Animations transform/opacity, which the browser runs
@@ -9,11 +9,11 @@
 // Skipped for "reduce motion" and after the first visit in this browser tab.
 import { useLayoutEffect, useRef, useState } from 'react';
 import GrowMark from './GrowMark';
-import { lockInteraction, markLoaderDone, prefersReducedMotion } from '../lib/motion';
+import { lockInteraction, markLoaderDone, prefersReducedMotion, sceneReady } from '../lib/motion';
 
 const SEEN_KEY = 'an-loader-seen';
 const INTRO_MS = 1750; // the growth animation, see .grow-mark in _base.scss
-const MAX_WAIT_MS = 6000; // never keep the visitor waiting longer than this for the 3D scene
+const MAX_WAIT_MS = 7000; // counted from the start of the page load, see pageReady()
 
 function alreadySeen() {
   try {
@@ -31,12 +31,16 @@ function markSeen() {
   }
 }
 
-// the page is "ready" when fonts and the 3D scene code are loaded
+// The page is "ready" when the fonts are there and the 3D scene has drawn its first
+// frames behind the loader (Hero mounts it straight away). So the mark keeps pulsing
+// exactly as long as the hero needs, and flies away over a finished page.
 function pageReady() {
-  const scene = import('../scenes/FactoryScene');
   const fonts = document.fonts?.ready ?? Promise.resolve();
-  const timeout = new Promise((resolve) => setTimeout(resolve, MAX_WAIT_MS));
-  return Promise.race([Promise.all([scene, fonts]), timeout]);
+  // the cap counts from the moment the visitor asked for the page, not from here, so a
+  // slow phone on a slow connection still gets to the site in a predictable time
+  const left = Math.max(1200, MAX_WAIT_MS - performance.now());
+  const timeout = new Promise((resolve) => setTimeout(resolve, left));
+  return Promise.race([Promise.all([sceneReady, fonts]), timeout]);
 }
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -70,7 +74,7 @@ export default function Loader() {
 
     const fly = async () => {
       const mark = markRef.current;
-      // stop blinking, so the stem is visible during the flight
+      // stop pulsing, so the stem is fully visible during the flight
       mark.firstElementChild.classList.remove('is-waiting');
       const target = document.querySelector('.site-header .logo-mark');
       // a small spring before take-off

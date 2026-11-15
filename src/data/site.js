@@ -7,7 +7,7 @@ export const LANGS = ['en', 'de', 'uk'];
 // Used at build time for canonical links, hreflang, the sitemap and link previews
 // (scripts/prerender.mjs). Can also be set as the SITE_URL environment variable
 // in the Cloudflare build settings. Leave empty until the domain works.
-export const SITE_URL = '';
+export const SITE_URL = 'https://andrii-naumov.andriy-naumov05.workers.dev';
 
 export const CONTACT = {
   email: 'andriy.naumov05@gmail.com',
@@ -15,11 +15,11 @@ export const CONTACT = {
   github: 'https://github.com/AndriiNS',
 };
 
-// Put a CV for every language into public/cv/. Until the DE and UK versions exist,
-// all languages point to the English file.
+// One CV file per language, in public/cv/. Ukrainian visitors get the English CV:
+// it is the version that gets sent around, and there is no Ukrainian original.
 export const CV = {
   en: 'cv/Andrii_Naumov_CV_EN.pdf',
-  de: 'cv/Andrii_Naumov_CV_EN.pdf',
+  de: 'cv/Andrii_Naumov_CV_DE.pdf',
   uk: 'cv/Andrii_Naumov_CV_EN.pdf',
 };
 
@@ -28,6 +28,10 @@ export const CV = {
 // public/projects/: <id>.webp (1240 px wide) and <id>-620.webp; `ratio` is height / width
 // of the screenshot, used to scroll the preview on hover.
 export const CASES = {
+  // The internal tool: a local web app, so it gets the same browser window as the client
+  // sites, with its real address. No link and no code: it belongs to the company (NDA).
+  // Three screenshots, switched by the thumbnails under the window.
+  parser: { host: 'localhost:4173', nda: true, shots: [0.9646, 0.8089, 0.625] },
   christmas: { url: 'https://christmas-tree.in.ua/', caseUrl: 'https://apexwebcraft.com.ua/cases/christmas/', ratio: 980 / 1240, ua: true },
   cardetail: { url: 'https://cardetail.km.ua/', caseUrl: 'https://apexwebcraft.com.ua/cases/apexdetail/', ratio: 980 / 1240, ua: true },
   apex: { url: 'https://apexwebcraft.com.ua/', ratio: 889 / 1240, ua: true },
@@ -42,16 +46,17 @@ export const PROJECT_LINKS = {
   '2rism': { live: 'https://andriins.github.io/2rism/', code: 'https://github.com/AndriiNS/2rism' },
 };
 
+// Keep this in step with the CV: a recruiter who reads both should see the same stack.
 export const SKILLS = {
-  frontend: ['HTML5', 'CSS3', 'SCSS', 'JavaScript (ES6+)', 'React'],
-  backend: ['PHP', 'Python', 'REST API', 'AJAX', 'MySQL', 'MongoDB'],
+  frontend: ['HTML5', 'CSS3', 'SCSS', 'JavaScript (ES6+)', 'React', 'Next.js'],
+  backend: ['PHP', 'Python', 'Node.js', 'REST API', 'AJAX', 'MySQL', 'MongoDB'],
   cms: ['WordPress', 'WooCommerce', 'ACF'],
   motion: ['GSAP', 'Three.js', 'Swiper.js', 'ScrollReveal'],
-  tools: ['Git', 'Figma', 'Vite'],
+  tools: ['Playwright', 'BeautifulSoup', 'Git', 'Vite', 'Webpack', 'Figma'],
 };
 
 // Skills drawn as blue keys: the main stack
-export const MAIN_SKILLS = ['JavaScript (ES6+)', 'React', 'SCSS', 'PHP', 'Python', 'WordPress', 'GSAP'];
+export const MAIN_SKILLS = ['JavaScript (ES6+)', 'React', 'SCSS', 'PHP', 'Python', 'WordPress', 'GSAP', 'Playwright'];
 
 // Data for the Impressum and the privacy policy (src/pages/legal/*).
 // § 5 DDG asks for a name, an address where you can receive post (no PO box)
@@ -59,11 +64,11 @@ export const MAIN_SKILLS = ['JavaScript (ES6+)', 'React', 'SCSS', 'PHP', 'Python
 // Replace every TODO before publishing the site.
 export const IMPRINT = {
   name: 'Andrii Naumov',
-  street: 'Musterstraße 1', // TODO: your street and house number
-  city: '58095 Hagen', // TODO: your postcode and city
+  street: 'Märkische Straße 10',
+  city: '58135 Hagen',
   country: 'Deutschland',
   email: CONTACT.email,
-  phone: '', // TODO: your phone number, e.g. '+49 151 00000000'
+  phone: '+49 1520 4344351',
 };
 
 // Hosting provider, named in the privacy policy. Change it if you move the site.
