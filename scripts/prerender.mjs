@@ -11,6 +11,8 @@
 // Also written: 404.html, robots.txt and, once SITE_URL is known, sitemap.xml.
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { createServer } from 'vite';
 
 const DIST = resolve('dist');
@@ -35,7 +37,15 @@ const vite = await createServer({ server: { middlewareMode: true }, appType: 'cu
 const { LANGS, SITE_URL: SITE_FROM_CODE, IMPRINT } = await vite.ssrLoadModule('/src/data/site.js');
 const { DEFAULT_LANG, PAGES, pathFor } = await vite.ssrLoadModule('/src/lib/lang.js');
 const { pageMeta } = await vite.ssrLoadModule('/src/lib/meta.js');
-await vite.close();
+
+// The app itself, rendered to HTML here so that search engines, link previews and
+// screen readers get a real page instead of an empty <div id="root">. React takes over
+// in the browser and renders the same thing again, this time with the 3D scene and all
+// the behaviour; it replaces this markup rather than hydrating it, so a difference
+// (the clock in the contact panel, say) can never break anything.
+const { StaticRouter } = await vite.ssrLoadModule('react-router-dom/server');
+const { default: App } = await vite.ssrLoadModule('/src/App.jsx');
+const { default: i18n } = await vite.ssrLoadModule('/src/i18n.js');
 
 const SITE_URL = (process.env.SITE_URL || SITE_FROM_CODE || '').replace(/\/$/, '');
 const locales = Object.fromEntries(LANGS.map((l) => [l, JSON.parse(readFileSync(`src/locales/${l}.json`, 'utf8'))]));
@@ -49,26 +59,10 @@ const fileFor = (path) => (path === '/' ? 'index.html' : `${path.slice(1)}.html`
 
 const template = readFileSync(resolve(DIST, 'index.html'), 'utf8');
 
-// What a visitor without JavaScript sees instead of an empty page: the same facts as the
-// first screen, plus a way to reach me. Search engines run JavaScript and see the real page.
-function fallback(lang, page, description) {
-  const t = tFor(lang);
-  if (page) return `<main><h1>${escape(t('meta.title'))}</h1><p>${escape(description)}</p></main>`;
-  const links = [
-    `<a href="mailto:${IMPRINT.email}">${IMPRINT.email}</a>`,
-    `<a href="https://www.linkedin.com/in/andrii-naumov-a09540283">LinkedIn</a>`,
-    `<a href="https://github.com/AndriiNS">GitHub</a>`,
-  ].join(' · ');
-  return [
-    '<main style="max-width:48rem;margin:0 auto;padding:48px 24px;font-family:system-ui,sans-serif;line-height:1.5">',
-    `<p>${escape(t('hero.role'))}</p>`,
-    `<h1>${escape(t('hero.name'))}</h1>`,
-    `<p>${escape(t('hero.tagline'))}</p>`,
-    `<h2>${escape(t('about.title'))}</h2><p>${escape(t('about.text'))}</p>`,
-    `<h2>${escape(t('contact.title'))}</h2><p>${links}</p>`,
-    `<p><a href="${pathFor(lang, 'impressum')}">${escape(t('footer.imprint'))}</a> · <a href="${pathFor(lang, 'datenschutz')}">${escape(t('footer.privacy'))}</a></p>`,
-    '</main>',
-  ].join('');
+// The page itself, as HTML
+async function renderApp(lang, page) {
+  await i18n.changeLanguage(lang);
+  return renderToStaticMarkup(createElement(StaticRouter, { location: pathFor(lang, page) }, createElement(App)));
 }
 
 // Who the site is about, in the form search engines read directly (schema.org/Person).
@@ -90,7 +84,7 @@ function personJsonLd(lang) {
   return `<script type="application/ld+json">${JSON.stringify(person).replace(/</g, '\\u003c')}</script>`;
 }
 
-function render(lang, page, { noindex = false } = {}) {
+async function render(lang, page, { noindex = false } = {}) {
   const { title, description } = pageMeta(tFor(lang), lang, page);
   const path = pathFor(lang, page);
   const head = [
@@ -127,7 +121,7 @@ function render(lang, page, { noindex = false } = {}) {
     .replace(/\n\s*<title>[\s\S]*?<\/title>/, '')
     .replace(/\n\s*<meta\s+name="description"[\s\S]*?\/>/, '')
     .replace(/\n\s*<\/head>/, `\n    ${head.join('\n    ')}\n  </head>`)
-    .replace('<div id="root"></div>', `<div id="root"></div>\n    <noscript>${fallback(lang, page, description)}</noscript>`);
+    .replace('<div id="root"></div>', `<div id="root">${await renderApp(lang, page)}</div>`);
 }
 
 const written = [];
@@ -136,13 +130,16 @@ for (const lang of LANGS) {
     const path = pathFor(lang, page);
     const file = resolve(DIST, fileFor(path));
     mkdirSync(dirname(file), { recursive: true });
-    writeFileSync(file, render(lang, page));
+    writeFileSync(file, await render(lang, page));
     written.push({ path, page });
   }
 }
 
 // unknown addresses: the German start page, marked "noindex"; the app sends the visitor home
-writeFileSync(resolve(DIST, '404.html'), render(DEFAULT_LANG, '', { noindex: true }));
+writeFileSync(resolve(DIST, '404.html'), await render(DEFAULT_LANG, '', { noindex: true }));
+
+// the dev server stays open until every page is rendered
+await vite.close();
 
 writeFileSync(resolve(DIST, 'robots.txt'), `User-agent: *\nAllow: /\n${SITE_URL ? `\nSitemap: ${SITE_URL}/sitemap.xml\n` : ''}`);
 

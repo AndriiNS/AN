@@ -6,3 +6,4 @@ dist-single
 .claude
 *.log
 Claude outputs/
+.dev.vars

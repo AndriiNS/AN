@@ -44,7 +44,7 @@ export const LEGAL = {
         {
           h: '2. Das Wichtigste in Kürze',
           p: [
-            'Diese Website ist ein persönliches Portfolio. Sie setzt keine Cookies, verwendet keine Analyse- oder Tracking-Werkzeuge und hat kein Kontaktformular. Schriftarten und alle anderen Dateien werden direkt von dieser Website geladen, es werden keine Inhalte von Drittanbietern eingebunden.',
+            'Diese Website ist ein persönliches Portfolio. Sie setzt keine Cookies und verwendet keine Analyse- oder Tracking-Werkzeuge. Schriftarten und alle anderen Dateien werden direkt von dieser Website geladen, es werden keine Inhalte von Drittanbietern eingebunden. Es gibt ein Kontaktformular; was damit passiert, steht in Abschnitt 4.',
           ],
         },
         {
@@ -57,9 +57,12 @@ export const LEGAL = {
           ],
         },
         {
-          h: '4. Kontakt per E-Mail',
+          h: '4. Kontakt per E-Mail, Telefon und Kontaktformular',
           p: [
-            'Wenn Sie mir eine E-Mail schreiben, verarbeite ich Ihre E-Mail-Adresse und den Inhalt Ihrer Nachricht, um Ihre Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn es um eine Stelle oder ein Projekt geht, sonst Art. 6 Abs. 1 lit. f DSGVO. Ich lösche die Daten, sobald sie für die Bearbeitung nicht mehr nötig sind und keine gesetzlichen Aufbewahrungspflichten bestehen.',
+            'Wenn Sie mir eine E-Mail schreiben oder anrufen, verarbeite ich Ihre Kontaktdaten und den Inhalt Ihrer Nachricht, um Ihre Anfrage zu beantworten. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO, wenn es um eine Stelle oder ein Projekt geht, sonst Art. 6 Abs. 1 lit. f DSGVO. Ich lösche die Daten, sobald sie für die Bearbeitung nicht mehr nötig sind und keine gesetzlichen Aufbewahrungspflichten bestehen.',
+            'Über das Kontaktformular übermitteln Sie Ihren Namen, Ihre E-Mail-Adresse und Ihre Nachricht. Zusätzlich werden die von Ihnen gewählte Sprache der Website und das Länderkürzel, das der Hosting-Anbieter aus Ihrer IP-Adresse ableitet, mitgeschickt; Ihre IP-Adresse selbst speichere ich nicht. Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO, die Sie mit dem Absenden erteilen und jederzeit für die Zukunft widerrufen können, sowie Art. 6 Abs. 1 lit. b DSGVO, wenn Ihre Anfrage eine Stelle oder ein Projekt betrifft.',
+            'Die Nachricht wird nicht in einer Datenbank gespeichert, sondern direkt an einen Telegram-Chat zugestellt, den nur ich lesen kann. Anbieter ist Telegram Messenger Inc., 2-4 Kingdom Street, London W2 6BD, Vereinigtes Königreich. Für das Vereinigte Königreich besteht ein Angemessenheitsbeschluss der EU-Kommission; dabei können Daten auch auf Servern außerhalb der EU verarbeitet werden. Ich lösche die Nachrichten im Chat, sobald sie nicht mehr gebraucht werden. Wenn Sie das vermeiden möchten, schreiben Sie mir stattdessen eine E-Mail.',
+            ['Weitere Informationen: ', link('Datenschutzerklärung von Telegram', 'https://telegram.org/privacy')],
           ],
         },
         {
@@ -105,7 +108,7 @@ export const LEGAL = {
         {
           h: '2. In short',
           p: [
-            'This website is a personal portfolio. It sets no cookies, uses no analytics or tracking tools and has no contact form. Fonts and all other files are loaded from this website itself; no third-party content is embedded.',
+            'This website is a personal portfolio. It sets no cookies and uses no analytics or tracking tools. Fonts and all other files are loaded from this website itself; no third-party content is embedded. There is a contact form; section 4 explains what happens with it.',
           ],
         },
         {
@@ -118,9 +121,12 @@ export const LEGAL = {
           ],
         },
         {
-          h: '4. Contact by email',
+          h: '4. Contact by email, phone and the contact form',
           p: [
-            'If you email me, I process your email address and the content of your message to answer you. The legal basis is Art. 6(1)(b) GDPR when it is about a job or a project, otherwise Art. 6(1)(f) GDPR. I delete the data once it is no longer needed and no legal retention period applies.',
+            'If you email or call me, I process your contact details and the content of your message to answer you. The legal basis is Art. 6(1)(b) GDPR when it is about a job or a project, otherwise Art. 6(1)(f) GDPR. I delete the data once it is no longer needed and no legal retention period applies.',
+            'Through the contact form you send your name, your email address and your message. The language of the website you were using and the country code the hosting provider derives from your IP address are sent along with it; I do not store the IP address itself. The legal basis is your consent under Art. 6(1)(a) GDPR, which you give by sending the form and can withdraw at any time with effect for the future, and Art. 6(1)(b) GDPR where your enquiry is about a job or a project.',
+            'The message is not stored in a database. It is delivered straight to a Telegram chat that only I can read. The provider is Telegram Messenger Inc., 2-4 Kingdom Street, London W2 6BD, United Kingdom. The European Commission has issued an adequacy decision for the United Kingdom; data may also be processed on servers outside the EU. I delete the messages in that chat once they are no longer needed. If you would rather avoid this, please send me an email instead.',
+            ['More information: ', link('Telegram privacy policy', 'https://telegram.org/privacy')],
           ],
         },
         {
@@ -166,7 +172,7 @@ export const LEGAL = {
         {
           h: '2. Коротко',
           p: [
-            'Цей сайт — особисте портфоліо. Він не встановлює cookies, не використовує аналітику чи трекінг і не має контактної форми. Шрифти та всі інші файли завантажуються з самого сайту, сторонній вміст не вбудовується.',
+            'Цей сайт — особисте портфоліо. Він не встановлює cookies й не використовує аналітику чи трекінг. Шрифти та всі інші файли завантажуються з самого сайту, сторонній вміст не вбудовується. На сайті є контактна форма; що з нею відбувається, описано в розділі 4.',
           ],
         },
         {
@@ -179,9 +185,12 @@ export const LEGAL = {
           ],
         },
         {
-          h: '4. Листування електронною поштою',
+          h: '4. Пошта, телефон і контактна форма',
           p: [
-            'Якщо ви пишете мені листа, я обробляю вашу адресу й текст повідомлення, щоб відповісти. Правова підстава — ст. 6(1)(b) GDPR, якщо йдеться про вакансію чи проєкт, інакше ст. 6(1)(f) GDPR. Я видаляю дані, коли вони більше не потрібні і немає обов’язку їх зберігати за законом.',
+            'Якщо ви пишете мені листа або телефонуєте, я обробляю ваші контактні дані й текст повідомлення, щоб відповісти. Правова підстава — ст. 6(1)(b) GDPR, якщо йдеться про вакансію чи проєкт, інакше ст. 6(1)(f) GDPR. Я видаляю дані, коли вони більше не потрібні і немає обов’язку їх зберігати за законом.',
+            'Через контактну форму ви надсилаєте своє ім’я, адресу e-mail і повідомлення. Разом з ними передаються мова сайту, якою ви користувалися, і код країни, який хостинг-провайдер визначає з вашої IP-адреси; саму IP-адресу я не зберігаю. Правова підстава — ваша згода за ст. 6(1)(a) GDPR, яку ви надаєте, надсилаючи форму, і можете будь-коли відкликати на майбутнє, а також ст. 6(1)(b) GDPR, якщо звернення стосується вакансії чи проєкту.',
+            'Повідомлення не зберігається в базі даних, а одразу надходить у чат Telegram, який читаю лише я. Провайдер — Telegram Messenger Inc., 2-4 Kingdom Street, London W2 6BD, Велика Британія. Щодо Великої Британії діє рішення Єврокомісії про адекватність; дані можуть оброблятися й на серверах поза ЄС. Я видаляю повідомлення в чаті, щойно вони більше не потрібні. Якщо ви хочете цього уникнути, напишіть мені, будь ласка, звичайного листа.',
+            ['Докладніше: ', link('політика конфіденційності Telegram', 'https://telegram.org/privacy')],
           ],
         },
         {

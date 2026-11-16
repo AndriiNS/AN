@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Andrii Naumov, web developer and process automation in Hagen",
-    "description": "Andrii Naumov, web developer in Hagen. Websites, web apps and process automation: integrations, internal tools and less manual work for teams.",
+    "description": "Andrii Naumov, web developer in Hagen, Germany. Websites, web apps and process automation: integrations, internal tools, less routine work.",
     "imprintDesc": "Imprint and contact details of Andrii Naumov, web developer and process automation in Hagen, Germany.",
     "privacyDesc": "Privacy policy of this website: no cookies, no tracking, no external fonts. Controller, hosting and your rights."
   },
@@ -36,8 +36,7 @@
         "name": "Ship",
         "text": "The result goes live faster: responsive, stable and with fewer manual mistakes."
       }
-    ],
-    "proof": "Project setup: from two hours to under 15 minutes. An internal tool I built, used daily by six developers."
+    ]
   },
   "projects": {
     "title": "Selected work",
@@ -67,25 +66,6 @@
     "hosted": "Hosted in Ukraine: from abroad the site may load a little slower.",
     "previewAlt": "Home page of {{name}}",
     "cases": [
-      {
-        "id": "parser",
-        "name": "Project setup automation",
-        "kind": "Internal tool · At work",
-        "summary": "An internal web tool that downloads a website, localises its assets and links and turns it into a clean project the team can start working in right away. Designed and built on my own initiative.",
-        "role": [
-          "Download layer with two engines: wget, and a real browser (Playwright) for pages behind a 403 or a bot check",
-          "Asset localisation: links are rewritten to relative paths, analytics and trackers are stripped, forms are redirected",
-          "React interface with three modes: whole website, selected pages, clean up an archive",
-          "Project setup from about two hours to under 15 minutes, 100+ projects set up with it, used daily by six developers"
-        ],
-        "stack": [
-          "Python",
-          "Node.js",
-          "React",
-          "Playwright",
-          "BeautifulSoup"
-        ]
-      },
       {
         "id": "christmas",
         "name": "Christmas Tree",
@@ -132,6 +112,25 @@
           "WordPress",
           "JavaScript",
           "SCSS"
+        ]
+      },
+      {
+        "id": "parser",
+        "name": "Project setup automation",
+        "kind": "Internal tool · At work",
+        "summary": "An internal web tool that downloads a website, localises its assets and links and turns it into a clean project the team can start working in right away. Designed and built on my own initiative.",
+        "role": [
+          "Download layer with two engines: wget, and a real browser (Playwright) for pages behind a 403 or a bot check",
+          "Asset localisation: links are rewritten to relative paths, analytics and trackers are stripped, forms are redirected",
+          "React interface with three modes: whole website, selected pages, clean up an archive",
+          "Project setup from about two hours to under 15 minutes, 100+ projects set up with it, used daily by six developers"
+        ],
+        "stack": [
+          "Python",
+          "Node.js",
+          "React",
+          "Playwright",
+          "BeautifulSoup"
         ]
       }
     ],
@@ -241,7 +240,24 @@
     "copy": "Copy email",
     "copied": "Copied",
     "localTime": "Local time in Hagen",
-    "status": "Open to a permanent position as a frontend or full-stack developer. Residence permit under § 24 AufenthG, unrestricted work permit. Hagen and the Ruhr area, happy to relocate within reach of Bochum (Dortmund, Essen, Herne)."
+    "status": "Open to a permanent position as a frontend or full-stack developer. Residence permit under § 24 AufenthG, unrestricted work permit. Hagen and the Ruhr area, happy to relocate within reach of Bochum (Dortmund, Essen, Herne).",
+    "form": {
+      "title": "Or write to me right here",
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "messagePlaceholder": "What is it about? A role, a project, a question …",
+      "consent": "I agree that my details may be processed to answer my enquiry.",
+      "consentLink": "Privacy policy",
+      "send": "Send message",
+      "sending": "Sending …",
+      "ok": "Thank you! Your message arrived, I usually reply within a day.",
+      "error": "That did not work, sorry. Please write to me directly at {{email}}.",
+      "errName": "Please enter your name.",
+      "errEmail": "Please enter a valid email address.",
+      "errMessage": "Please write a few sentences (at least 10 characters).",
+      "errConsent": "Without your consent I am not allowed to process the message."
+    }
   },
   "footer": {
     "imprint": "Imprint",

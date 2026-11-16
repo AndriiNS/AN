@@ -25,6 +25,9 @@ const CITIES = [
 function DotMap() {
   // one path per color is much lighter for the browser than 3500 <circle> elements
   const paths = useMemo(() => {
+    // 3500 dots are ~180 KB of path data and say nothing to a search engine, so the
+    // prerendered HTML leaves the map empty and the browser draws it on the first render
+    if (typeof document === 'undefined') return { '': '', ua: '', de: '' };
     const r = 2.6;
     const byType = { '': [], ua: [], de: [] };
     for (const [x, y, type] of map.dots) byType[type].push(`M${x - r} ${y}a${r} ${r} 0 1 0 ${r * 2} 0a${r} ${r} 0 1 0 ${-r * 2} 0`);
@@ -49,8 +52,10 @@ export default function Journey() {
   const [step, setStep] = useState(reduced ? items.length - 1 : 0);
   const [reached, setReached] = useState(reduced ? 1 : 0); // how far along the route, 0..1
 
-  // where Kyiv sits along the whole route (0..1)
+  // where Kyiv sits along the whole route (0..1). Only the browser can measure a path,
+  // so at build time (prerender) we use a value that is close enough for the first paint.
   const kyivAt = useMemo(() => {
+    if (typeof document === 'undefined') return 0.35;
     const ns = 'http://www.w3.org/2000/svg';
     const full = document.createElementNS(ns, 'path');
     const leg = document.createElementNS(ns, 'path');

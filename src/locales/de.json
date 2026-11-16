@@ -1,7 +1,7 @@
 {
   "meta": {
     "title": "Andrii Naumov, Webentwickler und Prozessautomatisierung in Hagen",
-    "description": "Andrii Naumov, Webentwickler in Hagen. Websites, Webanwendungen und Prozessautomatisierung: Integrationen, interne Tools und weniger manuelle Arbeit für Teams.",
+    "description": "Andrii Naumov, Webentwickler in Hagen. Websites, Webanwendungen und Prozessautomatisierung: Integrationen, interne Tools, weniger Routine.",
     "imprintDesc": "Impressum und Kontaktangaben von Andrii Naumov, Webentwickler und Prozessautomatisierung in Hagen.",
     "privacyDesc": "Datenschutzerklärung dieser Website: keine Cookies, kein Tracking, keine externen Schriften. Verantwortlicher, Hosting und Ihre Rechte."
   },
@@ -36,8 +36,7 @@
         "name": "Ausliefern",
         "text": "So geht das Ergebnis schneller live: responsiv, stabil und mit weniger manuellen Fehlern."
       }
-    ],
-    "proof": "Projektstart: von zwei Stunden auf unter 15 Minuten. Mein internes Tool, täglich von sechs Entwicklern genutzt."
+    ]
   },
   "projects": {
     "title": "Ausgewählte Arbeiten",
@@ -67,25 +66,6 @@
     "hosted": "Server in der Ukraine: aus dem Ausland lädt die Seite eventuell etwas langsamer.",
     "previewAlt": "Startseite von {{name}}",
     "cases": [
-      {
-        "id": "parser",
-        "name": "Automatisierter Projektstart",
-        "kind": "Internes Tool · Arbeit",
-        "summary": "Ein internes Web-Tool, das eine Website herunterlädt, ihre Assets und Links lokalisiert und daraus ein sauberes Projekt macht, mit dem das Team sofort weiterarbeiten kann. Aus eigener Initiative entworfen und gebaut.",
-        "role": [
-          "Download-Schicht mit zwei Engines: wget und ein echter Browser (Playwright) für Seiten mit 403 oder Bot-Prüfung",
-          "Lokalisierung aller Assets: Links werden zu relativen Pfaden, Analytics und Tracker fliegen raus, Formulare werden umgebogen",
-          "Oberfläche in React mit drei Modi: ganze Website, einzelne Seiten, Archiv bereinigen",
-          "Projektstart von rund zwei Stunden auf unter 15 Minuten, über 100 Projekte damit aufgesetzt, sechs Entwickler nutzen es täglich"
-        ],
-        "stack": [
-          "Python",
-          "Node.js",
-          "React",
-          "Playwright",
-          "BeautifulSoup"
-        ]
-      },
       {
         "id": "christmas",
         "name": "Christmas Tree",
@@ -132,6 +112,25 @@
           "WordPress",
           "JavaScript",
           "SCSS"
+        ]
+      },
+      {
+        "id": "parser",
+        "name": "Automatisierter Projektstart",
+        "kind": "Internes Tool · Arbeit",
+        "summary": "Ein internes Web-Tool, das eine Website herunterlädt, ihre Assets und Links lokalisiert und daraus ein sauberes Projekt macht, mit dem das Team sofort weiterarbeiten kann. Aus eigener Initiative entworfen und gebaut.",
+        "role": [
+          "Download-Schicht mit zwei Engines: wget und ein echter Browser (Playwright) für Seiten mit 403 oder Bot-Prüfung",
+          "Lokalisierung aller Assets: Links werden zu relativen Pfaden, Analytics und Tracker fliegen raus, Formulare werden umgebogen",
+          "Oberfläche in React mit drei Modi: ganze Website, einzelne Seiten, Archiv bereinigen",
+          "Projektstart von rund zwei Stunden auf unter 15 Minuten, über 100 Projekte damit aufgesetzt, sechs Entwickler nutzen es täglich"
+        ],
+        "stack": [
+          "Python",
+          "Node.js",
+          "React",
+          "Playwright",
+          "BeautifulSoup"
         ]
       }
     ],
@@ -241,7 +240,24 @@
     "copy": "E-Mail kopieren",
     "copied": "Kopiert",
     "localTime": "Ortszeit in Hagen",
-    "status": "Offen für eine Festanstellung als Frontend- oder Full-Stack-Entwickler. Aufenthaltserlaubnis nach § 24 AufenthG, uneingeschränkte Arbeitserlaubnis. Hagen und das Ruhrgebiet, Umzug möglich im Umkreis von Bochum (Dortmund, Essen, Herne)."
+    "status": "Offen für eine Festanstellung als Frontend- oder Full-Stack-Entwickler. Aufenthaltserlaubnis nach § 24 AufenthG, uneingeschränkte Arbeitserlaubnis. Hagen und das Ruhrgebiet, Umzug möglich im Umkreis von Bochum (Dortmund, Essen, Herne).",
+    "form": {
+      "title": "Oder direkt hier schreiben",
+      "name": "Name",
+      "email": "E-Mail",
+      "message": "Nachricht",
+      "messagePlaceholder": "Worum geht es? Eine Stelle, ein Projekt, eine Frage …",
+      "consent": "Ich bin damit einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet werden.",
+      "consentLink": "Datenschutzerklärung",
+      "send": "Nachricht senden",
+      "sending": "Wird gesendet …",
+      "ok": "Danke! Ihre Nachricht ist angekommen, ich melde mich meist innerhalb eines Tages.",
+      "error": "Das hat leider nicht geklappt. Schreiben Sie mir bitte direkt an {{email}}.",
+      "errName": "Bitte tragen Sie Ihren Namen ein.",
+      "errEmail": "Bitte tragen Sie eine gültige E-Mail-Adresse ein.",
+      "errMessage": "Bitte schreiben Sie ein paar Sätze (mindestens 10 Zeichen).",
+      "errConsent": "Ohne Ihre Einwilligung kann ich die Nachricht nicht verarbeiten."
+    }
   },
   "footer": {
     "imprint": "Impressum",

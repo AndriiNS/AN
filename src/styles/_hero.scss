@@ -85,22 +85,11 @@
     line-height: 1.4;
   }
 
-  // the result line: marked like a highlighted passage, so the eye stops at it
-  &__proof {
-    margin-top: 20px;
-    max-width: 24em;
-    padding-left: 14px;
-    border-left: 3px solid var(--yellow);
-    font-size: var(--fs-sm);
-    line-height: 1.45;
-    color: var(--muted);
-  }
-
   &__actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 28px;
+    margin-top: 36px;
   }
 
   &__captions {

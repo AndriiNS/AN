@@ -1,11 +1,20 @@
-// Cloudflare Workers: serve the built site (dist/) as static files.
+// Cloudflare Workers: serve the built site (dist/) as static files and handle the one
+// dynamic route, /api/contact, which forwards the contact form to a Telegram bot.
 // The build runs `npm run build`, then `npx wrangler deploy` reads this file.
 // _headers and _redirects in public/ are applied as well.
+//
+// The bot's token and chat id are secrets, not variables in this file:
+//   npx wrangler secret put TELEGRAM_BOT_TOKEN
+//   npx wrangler secret put TELEGRAM_CHAT_ID
+// For `npx wrangler dev` they are read from .dev.vars (see .dev.vars.example).
 {
   "name": "andrii-naumov",
   "compatibility_date": "2025-07-01",
+  "main": "worker/index.js",
   "assets": {
     "directory": "./dist",
+    // lets the Worker fall back to the static site: env.ASSETS.fetch(request)
+    "binding": "ASSETS",
     // /en serves dist/en.html, unknown addresses get dist/404.html with status 404
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"

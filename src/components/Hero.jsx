@@ -129,8 +129,6 @@ export default function Hero() {
             <p className="hero__role">{t('hero.role')}</p>
             <FlapText as="h1" id="hero-name" className="hero__name" text={t('hero.name')} />
             <FlapText as="p" className="hero__tagline" text={t('hero.tagline')} />
-            {/* the one number that says what the automation is actually worth */}
-            <p className="hero__proof">{t('hero.proof')}</p>
             <div className="hero__actions">
               <a
                 className="btn btn--primary"

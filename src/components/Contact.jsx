@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FlapText from './FlapText';
+import ContactForm from './ContactForm';
 import { CONTACT, CV, IMPRINT } from '../data/site';
 
 const LOCALES = { en: 'en-GB', de: 'de-DE', uk: 'uk-UA' };
@@ -89,6 +90,8 @@ export default function Contact() {
             GitHub
           </a>
         </div>
+
+        <ContactForm />
       </div>
     </section>
   );
