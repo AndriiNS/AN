@@ -6,7 +6,7 @@
 //   3. Ship      finished pages rise into a big phone, a beacon sends out "live" rings
 // Scrolling moves the isometric camera: overview, then station by station.
 // Hero.jsx shows the captions at the same scroll points (STAGE_STARTS).
-import { useEffect, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Environment, Html, Lightformer, OrthographicCamera, RoundedBox } from '@react-three/drei';
@@ -517,48 +517,24 @@ function Factory({ progressRef, layoutRef, reduced }) {
   );
 }
 
-// Phones and tablets do the same work with a far smaller GPU, so they get a cheaper
-// version of the scene: fewer pixels, no multisampling, a smaller shadow map and a
-// smaller environment map. The scene looks the same; it just costs much less.
+// phones and tablets: a little lower resolution, so the scene keeps a steady frame rate
 const TOUCH = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
-
-// A steady 30 frames a second is plenty for a slow isometric scene and halves the work
-// on a phone. React Three Fiber only draws when asked in "demand" mode, so we ask on a
-// timer instead of every animation frame.
-function FrameRate({ fps, active }) {
-  const invalidate = useThree((s) => s.invalidate);
-  useEffect(() => {
-    if (!active) return undefined;
-    let id;
-    let last = 0;
-    const tick = (now) => {
-      id = requestAnimationFrame(tick);
-      if (now - last < 1000 / fps) return;
-      last = now;
-      invalidate();
-    };
-    id = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(id);
-  }, [fps, active, invalidate]);
-  return null;
-}
 
 export default function FactoryScene({ progressRef, layoutRef, reduced, active }) {
   return (
     <Canvas
       shadows
-      dpr={[1, TOUCH ? 1.25 : 1.75]}
-      frameloop={reduced || TOUCH ? 'demand' : active ? 'always' : 'never'}
-      gl={{ antialias: !TOUCH, alpha: true, toneMapping: THREE.NeutralToneMapping }}
+      dpr={[1, TOUCH ? 1.5 : 1.75]}
+      frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
+      gl={{ antialias: true, alpha: true, toneMapping: THREE.NeutralToneMapping }}
       aria-hidden="true"
     >
-      {TOUCH && !reduced && <FrameRate fps={30} active={active} />}
       <ambientLight intensity={0.85} />
       <directionalLight
         position={[-8, 16, 10]}
         intensity={1.9}
         castShadow
-        shadow-mapSize={TOUCH ? [512, 512] : [2048, 2048]}
+        shadow-mapSize={TOUCH ? [1024, 1024] : [2048, 2048]}
         shadow-camera-left={-18}
         shadow-camera-right={18}
         shadow-camera-top={12}
@@ -567,7 +543,7 @@ export default function FactoryScene({ progressRef, layoutRef, reduced, active }
         shadow-camera-far={60}
         shadow-bias={-0.0005}
       />
-      <Environment resolution={TOUCH ? 64 : 256}>
+      <Environment resolution={256}>
         <Lightformer form="rect" intensity={2} position={[0, 5, 5]} scale={[10, 3, 1]} />
         <Lightformer form="rect" intensity={1} position={[-6, 0, 3]} rotation-y={Math.PI / 2} scale={[8, 4, 1]} />
         <Lightformer form="circle" intensity={0.6} color="#ffe7a0" position={[6, -2, 3]} rotation-y={-Math.PI / 2} scale={3} />

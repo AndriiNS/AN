@@ -9,11 +9,16 @@
 // Skipped for "reduce motion" and after the first visit in this browser tab.
 import { useLayoutEffect, useRef, useState } from 'react';
 import GrowMark from './GrowMark';
-import { lockInteraction, markLoaderDone, prefersReducedMotion, sceneReady } from '../lib/motion';
+import { lockInteraction, markLoaderDone, prefersReducedMotion } from '../lib/motion';
 
 const SEEN_KEY = 'an-loader-seen';
 const INTRO_MS = 1750; // the growth animation, see .grow-mark in _base.scss
-const MAX_WAIT_MS = 7000; // counted from the start of the page load, see pageReady()
+const MAX_WAIT_MS = 6000; // counted from the start of the page load, see pageReady()
+// In the prerendered HTML the mark is left out: the page is painted before any script
+// runs, and React would otherwise replace those elements a moment later and restart
+// their animation halfway through — the mark visibly jumped back and drew itself again.
+// So the static page shows only the plain backdrop, and the mark starts once, cleanly.
+const CLIENT = typeof window !== 'undefined';
 
 function alreadySeen() {
   try {
@@ -31,16 +36,17 @@ function markSeen() {
   }
 }
 
-// The page is "ready" when the fonts are there and the 3D scene has drawn its first
-// frames behind the loader (Hero mounts it straight away). So the mark keeps pulsing
-// exactly as long as the hero needs, and flies away over a finished page.
+// The page is "ready" when the fonts and the 3D scene's code are loaded. The scene then
+// draws itself a moment later; until it does, the hero shows its own small placeholder
+// (see Hero.jsx), so the loader never has to hold the whole page back for it.
 function pageReady() {
+  const scene = import('../scenes/FactoryScene');
   const fonts = document.fonts?.ready ?? Promise.resolve();
   // the cap counts from the moment the visitor asked for the page, not from here, so a
   // slow phone on a slow connection still gets to the site in a predictable time
   const left = Math.max(1200, MAX_WAIT_MS - performance.now());
   const timeout = new Promise((resolve) => setTimeout(resolve, left));
-  return Promise.race([Promise.all([sceneReady, fonts]), timeout]);
+  return Promise.race([Promise.all([scene, fonts]), timeout]);
 }
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -124,10 +130,10 @@ export default function Loader() {
   if (!visible) return null;
 
   return (
-    <div className="loader" aria-hidden="true">
+    <div className="loader" data-static={CLIENT ? undefined : ''} aria-hidden="true">
       <div ref={backdropRef} className="loader__backdrop" />
       <div ref={markRef} className="loader__mark">
-        <GrowMark waiting />
+        {CLIENT && <GrowMark waiting />}
       </div>
     </div>
   );

@@ -313,15 +313,13 @@ body.is-switching main h3 {
   cursor: progress;
   touch-action: none;
 }
-// The loader is part of the prerendered HTML, so it is on screen before any JavaScript
-// runs. If the script never arrives — blocked, failed, or switched off — it must not hide
-// the page for ever, so after a few seconds it fades away by itself. Loader.jsx puts
-// `is-loading` on <html> the moment React mounts, which switches this safety net off.
-.loader {
-  animation: loader-give-up 0.6s ease 6s both;
-}
-html.is-loading .loader {
-  animation: none;
+// The prerendered page carries a bare loader backdrop, so the first paint is the quiet
+// paper colour rather than a flash of content. Only that static one gets a safety fade:
+// if the script never arrives — blocked, failed, or switched off — the page appears
+// anyway after a few seconds. React's own loader has no `data-static`, so it stays until
+// the mark has flown into the header.
+.loader[data-static] {
+  animation: loader-give-up 0.6s ease 4s both;
 }
 @keyframes loader-give-up {
   to {

@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FlapText from './FlapText';
 import { CV } from '../data/site';
-import { gsap, markSceneReady, ScrollTrigger, scrollToId, useReducedMotion } from '../lib/motion';
+import { gsap, loaderDone, markSceneReady, sceneReady, ScrollTrigger, scrollToId, useReducedMotion } from '../lib/motion';
 
 // three.js is big, so the 3D scene loads after the text is already on screen
 const FactoryScene = lazy(() => import('../scenes/FactoryScene'));
@@ -39,11 +39,24 @@ export default function Hero() {
   const [webgl] = useState(hasWebGL);
   const stages = t('hero.stages', { returnObjects: true });
 
-  // The scene loads and draws while the loader is still on screen, so the hero is
-  // already finished when the loader lifts. With no scene to wait for, release the
-  // loader right away. (FactoryScene reports its own first frames.)
+  // Building the 3D scene is the heaviest thing on the page, so it waits until the
+  // loader has finished: nothing competes with the loader's animation and it stays
+  // smooth. Until the scene has drawn its first frames the hero shows a small
+  // placeholder of its own, so the space never looks empty or broken, and the scene
+  // then fades in over it.
+  const [mount, setMount] = useState(false);
+  const [sceneOn, setSceneOn] = useState(false);
   useEffect(() => {
-    if (!webgl) markSceneReady();
+    if (!webgl) {
+      markSceneReady();
+      return undefined;
+    }
+    let alive = true;
+    loaderDone.then(() => alive && setMount(true));
+    sceneReady.then(() => alive && setSceneOn(true));
+    return () => {
+      alive = false;
+    };
   }, [webgl]);
 
   // measure the text blocks (they change with the language, fonts and screen size)
@@ -117,10 +130,20 @@ export default function Hero() {
     <section ref={sectionRef} className={`hero ${reduced ? 'hero--static' : ''}`} id="top" aria-labelledby="hero-name">
       <div ref={stageRef} className="hero__stage">
         {webgl && (
-          <div className="hero__canvas">
-            <Suspense fallback={null}>
-              <FactoryScene progressRef={progressRef} layoutRef={layoutRef} reduced={reduced} active={active} />
-            </Suspense>
+          <div className={`hero__canvas ${sceneOn ? 'is-on' : ''}`}>
+            {mount && (
+              <Suspense fallback={null}>
+                <FactoryScene progressRef={progressRef} layoutRef={layoutRef} reduced={reduced} active={active} />
+              </Suspense>
+            )}
+            {/* three blocks moving along like the ones on the belt, until the scene is there */}
+            {!sceneOn && (
+              <span className="hero__canvas-wait" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+              </span>
+            )}
           </div>
         )}
 
