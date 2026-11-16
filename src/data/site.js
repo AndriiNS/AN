@@ -37,13 +37,10 @@ export const CASES = {
   apex: { url: 'https://apexwebcraft.com.ua/', ratio: 889 / 1240, ua: true },
 };
 
-// Links for the projects in src/locales/*.json (matched by id)
+// Live site and source links for the projects in src/locales/*.json (matched by id).
+// Projects without an entry simply show no links.
 export const PROJECT_LINKS = {
-  parser: {},
   landings: {},
-  midas: { live: 'https://andriins.github.io/MIDAS/', code: 'https://github.com/AndriiNS/MIDAS' },
-  agency: { live: 'https://andriins.github.io/agency-creative/', code: 'https://github.com/AndriiNS/agency-creative' },
-  '2rism': { live: 'https://andriins.github.io/2rism/', code: 'https://github.com/AndriiNS/2rism' },
 };
 
 // Keep this in step with the CV: a recruiter who reads both should see the same stack.

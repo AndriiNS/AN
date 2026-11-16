@@ -1035,3 +1035,37 @@
     margin: 8px 0 24px;
   }
 }
+
+// ---------- Page not found (pages/NotFound.jsx) ----------
+.not-found {
+  display: grid;
+  align-content: center;
+  min-height: 56vh;
+
+  &__code {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    color: var(--blue);
+  }
+  &__title {
+    margin-top: 12px;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: var(--fs-xl);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+  &__text {
+    margin-top: 18px;
+    max-width: 46ch;
+    font-size: var(--fs-md);
+    line-height: 1.45;
+    color: var(--muted);
+  }
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 32px;
+  }
+}

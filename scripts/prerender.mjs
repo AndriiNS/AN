@@ -36,7 +36,7 @@ const fontsFor = (lang) =>
 const vite = await createServer({ server: { middlewareMode: true }, appType: 'custom', logLevel: 'error' });
 const { LANGS, SITE_URL: SITE_FROM_CODE, IMPRINT } = await vite.ssrLoadModule('/src/data/site.js');
 const { DEFAULT_LANG, PAGES, pathFor } = await vite.ssrLoadModule('/src/lib/lang.js');
-const { pageMeta } = await vite.ssrLoadModule('/src/lib/meta.js');
+const { notFoundMeta, pageMeta } = await vite.ssrLoadModule('/src/lib/meta.js');
 
 // The app itself, rendered to HTML here so that search engines, link previews and
 // screen readers get a real page instead of an empty <div id="root">. React takes over
@@ -60,9 +60,11 @@ const fileFor = (path) => (path === '/' ? 'index.html' : `${path.slice(1)}.html`
 const template = readFileSync(resolve(DIST, 'index.html'), 'utf8');
 
 // The page itself, as HTML
-async function renderApp(lang, page) {
+async function renderApp(lang, page, notFound) {
   await i18n.changeLanguage(lang);
-  return renderToStaticMarkup(createElement(StaticRouter, { location: pathFor(lang, page) }, createElement(App)));
+  // an address that is not in PAGES makes the app render its "page not found" screen
+  const location = notFound ? '/this-address-does-not-exist' : pathFor(lang, page);
+  return renderToStaticMarkup(createElement(StaticRouter, { location }, createElement(App)));
 }
 
 // Who the site is about, in the form search engines read directly (schema.org/Person).
@@ -84,8 +86,11 @@ function personJsonLd(lang) {
   return `<script type="application/ld+json">${JSON.stringify(person).replace(/</g, '\\u003c')}</script>`;
 }
 
-async function render(lang, page, { noindex = false } = {}) {
-  const { title, description } = pageMeta(tFor(lang), lang, page);
+async function render(lang, page, { notFound = false } = {}) {
+  const t = tFor(lang);
+  // an address that does not exist must not be indexed and has no translations
+  const noindex = notFound;
+  const { title, description, ogTitle, ogDescription } = notFound ? notFoundMeta(t) : pageMeta(t, lang, page);
   const path = pathFor(lang, page);
   const head = [
     ...(SCENE_CHUNK && !page ? [`<link rel="modulepreload" href="/assets/${SCENE_CHUNK}" />`] : []),
@@ -94,8 +99,8 @@ async function render(lang, page, { noindex = false } = {}) {
     `<meta name="description" content="${escape(description)}" />`,
     `<meta property="og:type" content="website" />`,
     `<meta property="og:site_name" content="Andrii Naumov" />`,
-    `<meta property="og:title" content="${escape(title)}" />`,
-    `<meta property="og:description" content="${escape(description)}" />`,
+    `<meta property="og:title" content="${escape(ogTitle)}" />`,
+    `<meta property="og:description" content="${escape(ogDescription)}" />`,
     `<meta property="og:locale" content="${OG_LOCALE[lang]}" />`,
     `<meta name="twitter:card" content="summary_large_image" />`,
   ];
@@ -121,7 +126,7 @@ async function render(lang, page, { noindex = false } = {}) {
     .replace(/\n\s*<title>[\s\S]*?<\/title>/, '')
     .replace(/\n\s*<meta\s+name="description"[\s\S]*?\/>/, '')
     .replace(/\n\s*<\/head>/, `\n    ${head.join('\n    ')}\n  </head>`)
-    .replace('<div id="root"></div>', `<div id="root">${await renderApp(lang, page)}</div>`);
+    .replace('<div id="root"></div>', `<div id="root">${await renderApp(lang, page, notFound)}</div>`);
 }
 
 const written = [];
@@ -135,8 +140,9 @@ for (const lang of LANGS) {
   }
 }
 
-// unknown addresses: the German start page, marked "noindex"; the app sends the visitor home
-writeFileSync(resolve(DIST, '404.html'), await render(DEFAULT_LANG, '', { noindex: true }));
+// unknown addresses: a real "page not found" screen, marked "noindex". Cloudflare serves
+// this file with status 404 and leaves the address in the bar (see wrangler.jsonc).
+writeFileSync(resolve(DIST, '404.html'), await render(DEFAULT_LANG, '', { notFound: true }));
 
 // the dev server stays open until every page is rendered
 await vite.close();

@@ -3,7 +3,9 @@
     "title": "Andrii Naumov, Webentwickler und Prozessautomatisierung in Hagen",
     "description": "Andrii Naumov, Webentwickler in Hagen. Websites, Webanwendungen und Prozessautomatisierung: Integrationen, interne Tools, weniger Routine.",
     "imprintDesc": "Impressum und Kontaktangaben von Andrii Naumov, Webentwickler und Prozessautomatisierung in Hagen.",
-    "privacyDesc": "Datenschutzerklärung dieser Website: keine Cookies, kein Tracking, keine externen Schriften. Verantwortlicher, Hosting und Ihre Rechte."
+    "privacyDesc": "Datenschutzerklärung dieser Website: keine Cookies, kein Tracking, keine externen Schriften. Verantwortlicher, Hosting und Ihre Rechte.",
+    "ogTitle": "Andrii Naumov — Webentwickler in Hagen",
+    "ogDesc": "Websites, Webanwendungen und Prozessautomatisierung. Portfolio mit Projekten und Lebenslauf."
   },
   "nav": {
     "skip": "Zum Inhalt springen",
@@ -292,5 +294,12 @@
     "translationNote": "",
     "germanLink": "",
     "updated": "Stand: November 2026"
+  },
+  "notFound": {
+    "title": "Seite nicht gefunden",
+    "code": "Fehler 404",
+    "text": "Diese Adresse gibt es hier nicht. Vielleicht hat sich ein Tippfehler eingeschlichen, oder der Link ist älter als die Seite.",
+    "home": "Zur Startseite",
+    "projects": "Zu den Projekten"
   }
 }

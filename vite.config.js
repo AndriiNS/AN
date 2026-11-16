@@ -21,6 +21,11 @@ export default defineConfig(({ mode }) => {
     base: BASE,
     plugins: [react()],
     // three.js is loaded with React.lazy in Hero.jsx, so it gets its own file automatically
-    build: { chunkSizeWarningLimit: 900 },
+    build: {
+      chunkSizeWarningLimit: 900,
+      // ship source maps: an error in the live site's console then points at the real
+      // line in the real file instead of at minified gibberish
+      sourcemap: true,
+    },
   };
 });

@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { LANGS } from './data/site';
 import { DEFAULT_LANG, pathFor } from './lib/lang';
 import { PageTransitions, useRoute } from './lib/routing';
-import { pageMeta } from './lib/meta';
+import { notFoundMeta, pageMeta } from './lib/meta';
 import Home from './pages/Home';
 import LegalPage from './pages/LegalPage';
+import NotFound from './pages/NotFound';
 
 // One route for everything: the language and the page are read from the URL
 // (see lib/lang.js). Because it is always the same element, switching language
@@ -27,10 +28,12 @@ function Shell() {
   // <html lang>, title, description and hreflang links for search engines
   useEffect(() => {
     document.documentElement.lang = lang;
-    const meta = pageMeta(t, lang, page);
+    const meta = known ? pageMeta(t, lang, page) : notFoundMeta(t);
     document.title = meta.title;
     document.querySelector('meta[name="description"]')?.setAttribute('content', meta.description);
     document.querySelectorAll('link[data-hreflang]').forEach((el) => el.remove());
+    // an address that does not exist has no translations to point at
+    if (!known) return;
     const origin = window.location.origin + import.meta.env.BASE_URL.replace(/\/$/, '');
     [...LANGS, 'x-default'].forEach((l) => {
       const link = document.createElement('link');
@@ -40,9 +43,9 @@ function Shell() {
       link.dataset.hreflang = '';
       document.head.appendChild(link);
     });
-  }, [lang, page, t, i18n.language]);
+  }, [lang, page, known, t, i18n.language]);
 
-  if (!known) return <Navigate to={pathFor(lang)} replace />;
+  if (!known) return <NotFound />;
   if (page === 'impressum') return <LegalPage kind="imprint" />;
   if (page === 'datenschutz') return <LegalPage kind="privacy" />;
   return <Home />;

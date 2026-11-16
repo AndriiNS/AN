@@ -3,7 +3,9 @@
     "title": "Andrii Naumov, web developer and process automation in Hagen",
     "description": "Andrii Naumov, web developer in Hagen, Germany. Websites, web apps and process automation: integrations, internal tools, less routine work.",
     "imprintDesc": "Imprint and contact details of Andrii Naumov, web developer and process automation in Hagen, Germany.",
-    "privacyDesc": "Privacy policy of this website: no cookies, no tracking, no external fonts. Controller, hosting and your rights."
+    "privacyDesc": "Privacy policy of this website: no cookies, no tracking, no external fonts. Controller, hosting and your rights.",
+    "ogTitle": "Andrii Naumov — web developer in Hagen",
+    "ogDesc": "Websites, web apps and process automation. Portfolio with projects and CV."
   },
   "nav": {
     "skip": "Skip to content",
@@ -292,5 +294,12 @@
     "translationNote": "This is a translation for your convenience. The German version is legally binding.",
     "germanLink": "Read the German version",
     "updated": "Last updated: November 2026"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "code": "Error 404",
+    "text": "There is no such address here. Maybe a typo slipped in, or the link is older than the site.",
+    "home": "Go to the start page",
+    "projects": "See the projects"
   }
 }
